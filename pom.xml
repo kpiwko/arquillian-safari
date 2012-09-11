@@ -23,6 +23,8 @@
         <version.org.jboss.arquillian.graphene>2.0.0.Alpha2</version.org.jboss.arquillian.graphene>
         <version.org.jboss.as>7.1.1.Final</version.org.jboss.as>
 
+        <!-- test properties -->
+        <browserCapabilities>firefox</browserCapabilities>
     </properties>
 
     <licenses>
@@ -172,11 +174,33 @@
             root) -->
         <finalName>${project.artifactId}</finalName>
 
+        <!-- Enable Arquillian Drone selection via Maven profiles in IDE -->
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/arquillian.xml</include>
+                </includes>
+            </testResource>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+                <excludes>
+                    <exclude>**/arquillian.xml</exclude>
+                </excludes>
+            </testResource>
+        </testResources>
+
         <pluginManagement>
             <plugins>
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>2.11</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>2.5</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -227,9 +251,18 @@
                 </plugins>
             </build>
         </profile>
+
         <profile>
             <id>webdriver</id>
         </profile>
+        <profile>
+            <id>webdriver-chrome</id>
+
+            <properties>
+                <browserCapabilities>chrome</browserCapabilities>
+            </properties>
+        </profile>
+
         <profile>
             <id>arq-jbossas-remote</id>
 
