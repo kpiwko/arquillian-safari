@@ -18,6 +18,9 @@
 
         <version.org.jboss.spec.ee6-web>3.0.1.Final</version.org.jboss.spec.ee6-web>
         <version.org.jboss.bom.hibernate>1.0.0.Final</version.org.jboss.bom.hibernate>
+        <version.org.jboss.arquillian>1.0.2.Final</version.org.jboss.arquillian>
+        <version.org.jboss.arquillian.drone>1.1.0.CR3</version.org.jboss.arquillian.drone>
+
     </properties>
 
     <licenses>
@@ -43,6 +46,22 @@
                 <groupId>org.jboss.bom</groupId>
                 <artifactId>jboss-javaee-6.0-with-hibernate</artifactId>
                 <version>${version.org.jboss.bom.hibernate}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- Arquillian -->
+            <dependency>
+                <groupId>org.jboss.arquillian</groupId>
+                <artifactId>arquillian-bom</artifactId>
+                <version>${version.org.jboss.arquillian}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- Arquillian -->
+            <dependency>
+                <groupId>org.jboss.arquillian.extension</groupId>
+                <artifactId>arquillian-drone-bom</artifactId>
+                <version>${version.org.jboss.arquillian.drone}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
