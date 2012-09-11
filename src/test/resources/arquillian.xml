@@ -29,8 +29,23 @@
     <!-- Force the use of the Servlet 3.0 protocol with all containers, as it is the most mature -->
     <defaultProtocol type="Servlet 3.0" />
 
+    <container qualifier="jboss"></container>
+
+    <container qualifier="openshift">
+        <configuration>
+            <property name="namespace">arqtest</property>
+            <property name="application">testapp</property>
+            <property name="sshUserName">bd4bd01cb4bf44bcbb2f2ada6b8b013f</property>
+            <property name="login">kpiwko@redhat.com</property>
+        </configuration>
+    </container>
+
     <extension qualifier="webdriver">
         <property name="browserCapabilities">${browserCapabilities}</property>
+    </extension>
+
+    <extension qualifier="container-selector">
+        <property name="default">${testContainer}</property>
     </extension>
 
 </arquillian>
