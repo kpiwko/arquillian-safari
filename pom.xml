@@ -16,12 +16,7 @@
             resources, i.e. build is platform dependent! -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <version.javax.enterprise.cdi>1.0-SP4</version.javax.enterprise.cdi>
-        <version.org.jboss.spec.javax.annotation>1.0.1.Final</version.org.jboss.spec.javax.annotation>
-        <version.org.jboss.spec.javax.ws.rs>1.0.0.Final</version.org.jboss.spec.javax.ws.rs>
-        <version.org.hibernate.javax.persistence>1.0.1.Final</version.org.hibernate.javax.persistence>
-        <version.org.jboss.spec.javax.ejb>1.0.2.Final</version.org.jboss.spec.javax.ejb>
-        <version.org.jboss.spec.javax.servlet>1.0.1.Final</version.org.jboss.spec.javax.servlet>
+        <version.org.jboss.spec.ee6-web>3.0.1.Final</version.org.jboss.spec.ee6-web>
         <version.org.hibernate.validator>4.2.0.Final</version.org.hibernate.validator>
         <version.org.hibernate.jpamodelgen>1.1.1.Final</version.org.hibernate.jpamodelgen>
 
@@ -35,6 +30,18 @@
         </license>
     </licenses>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.jboss.spec</groupId>
+                <artifactId>jboss-javaee-web-6.0</artifactId>
+                <version>${version.org.jboss.spec.ee6-web}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
         <!-- First declare the APIs we depend on and need for compilation. All of them are provided by JBoss -->
 
@@ -43,7 +50,6 @@
             <groupId>javax.enterprise</groupId>
             <artifactId>cdi-api</artifactId>
             <scope>provided</scope>
-            <version>${version.javax.enterprise.cdi}</version>
         </dependency>
 
         <!-- Import the Common Annotations API (JSR-250), we use provided scope as the API is included in JBoss -->
@@ -51,7 +57,6 @@
             <groupId>org.jboss.spec.javax.annotation</groupId>
             <artifactId>jboss-annotations-api_1.1_spec</artifactId>
             <scope>provided</scope>
-            <version>${version.org.jboss.spec.javax.annotation}</version>
         </dependency>
 
         <!-- Import the JAX-RS API, we use provided scope as the API is included in JBoss -->
@@ -59,7 +64,6 @@
             <groupId>org.jboss.spec.javax.ws.rs</groupId>
             <artifactId>jboss-jaxrs-api_1.1_spec</artifactId>
             <scope>provided</scope>
-            <version>${version.org.jboss.spec.javax.ws.rs}</version>
         </dependency>
 
         <!-- Import the JPA API, we use provided scope as the API is included in JBoss -->
@@ -67,7 +71,6 @@
             <groupId>org.hibernate.javax.persistence</groupId>
             <artifactId>hibernate-jpa-2.0-api</artifactId>
             <scope>provided</scope>
-            <version>${version.org.hibernate.javax.persistence}</version>
         </dependency>
 
         <!-- Import the EJB API, we use provided scope as the API is included in JBoss -->
@@ -75,7 +78,6 @@
             <groupId>org.jboss.spec.javax.ejb</groupId>
             <artifactId>jboss-ejb-api_3.1_spec</artifactId>
             <scope>provided</scope>
-            <version>${version.org.jboss.spec.javax.ejb}</version>
         </dependency>
 
         <!-- Import the Servlet API, we use provided scope as the API is included in JBoss AS 7 -->
@@ -83,7 +85,6 @@
             <groupId>org.jboss.spec.javax.servlet</groupId>
             <artifactId>jboss-servlet-api_3.0_spec</artifactId>
             <scope>provided</scope>
-            <version>${version.org.jboss.spec.javax.servlet}</version>
         </dependency>
 
         <!-- JSR-303 (Bean Validation) Implementation -->
