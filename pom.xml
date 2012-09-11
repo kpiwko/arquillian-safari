@@ -209,6 +209,9 @@
                 </plugins>
             </build>
         </profile>
+        <profile>
+            <id>webdriver</id>
+        </profile>
     </profiles>
 
 </project>
