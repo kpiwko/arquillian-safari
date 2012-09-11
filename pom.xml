@@ -17,9 +17,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <version.org.jboss.spec.ee6-web>3.0.1.Final</version.org.jboss.spec.ee6-web>
-        <version.org.hibernate.validator>4.2.0.Final</version.org.hibernate.validator>
-        <version.org.hibernate.jpamodelgen>1.1.1.Final</version.org.hibernate.jpamodelgen>
-
+        <version.org.jboss.bom.hibernate>1.0.0.Final</version.org.jboss.bom.hibernate>
     </properties>
 
     <licenses>
@@ -32,10 +30,19 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- JDF - http://www.jboss.org/jdf/stack/stacks/ -->
             <dependency>
                 <groupId>org.jboss.spec</groupId>
                 <artifactId>jboss-javaee-web-6.0</artifactId>
                 <version>${version.org.jboss.spec.ee6-web}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- JDF - http://www.jboss.org/jdf/stack/stacks/ -->
+            <dependency>
+                <groupId>org.jboss.bom</groupId>
+                <artifactId>jboss-javaee-6.0-with-hibernate</artifactId>
+                <version>${version.org.jboss.bom.hibernate}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -93,7 +100,6 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>${version.org.hibernate.validator}</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -109,7 +115,6 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-jpamodelgen</artifactId>
-            <version>${version.org.hibernate.jpamodelgen}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
