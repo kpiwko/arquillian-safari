@@ -21,6 +21,7 @@
         <version.org.jboss.arquillian>1.0.2.Final</version.org.jboss.arquillian>
         <version.org.jboss.arquillian.drone>1.1.0.CR3</version.org.jboss.arquillian.drone>
         <version.org.jboss.as>7.1.1.Final</version.org.jboss.as>
+        <version.junit>4.10</version.junit>
 
         <!-- test properties -->
         <browserCapabilities>firefox</browserCapabilities>
@@ -72,6 +73,12 @@
                 <groupId>org.jboss.as</groupId>
                 <artifactId>jboss-as-arquillian-container-remote</artifactId>
                 <version>${version.org.jboss.as}</version>
+            </dependency>
+            <!-- JUnit -->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${version.junit}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -152,6 +159,25 @@
             <groupId>org.jboss.arquillian.extension</groupId>
             <artifactId>arquillian-drone-webdriver-depchain</artifactId>
             <type>pom</type>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Needed for running tests (you may also use TestNG) -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jboss.arquillian.junit</groupId>
+            <artifactId>arquillian-junit-container</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jboss.arquillian.protocol</groupId>
+            <artifactId>arquillian-protocol-servlet</artifactId>    
             <scope>test</scope>
         </dependency>
 
