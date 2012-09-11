@@ -21,6 +21,7 @@
         <version.org.jboss.arquillian>1.0.2.Final</version.org.jboss.arquillian>
         <version.org.jboss.arquillian.drone>1.1.0.CR3</version.org.jboss.arquillian.drone>
         <version.org.jboss.arquillian.graphene>2.0.0.Alpha2</version.org.jboss.arquillian.graphene>
+        <version.org.jboss.as>7.1.1.Final</version.org.jboss.as>
 
     </properties>
 
@@ -71,6 +72,16 @@
                 <artifactId>graphene-webdriver</artifactId>
                 <version>${version.org.jboss.arquillian.graphene}</version>
                 <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.as</groupId>
+                <artifactId>jboss-as-arquillian-container-remote</artifactId>
+                <version>${version.org.jboss.as}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.as</groupId>
+                <artifactId>jboss-as-arquillian-container-managed</artifactId>
+                <version>${version.org.jboss.as}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -193,7 +204,7 @@
             <plugin>
                 <groupId>org.jboss.as.plugins</groupId>
                 <artifactId>jboss-as-maven-plugin</artifactId>
-                <version>7.1.1.Final</version>
+                <version>${version.org.jboss.as}</version>
             </plugin>
         </plugins>
     </build>
@@ -219,6 +230,60 @@
         <profile>
             <id>webdriver</id>
         </profile>
+        <profile>
+            <id>arq-jbossas-remote</id>
+
+            <dependencies>
+                <dependency>
+                    <groupId>org.jboss.as</groupId>
+                    <artifactId>jboss-as-arquillian-container-remote</artifactId>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+
+        <profile>
+            <id>arq-jbossas-managed</id>
+
+            <dependencies>
+                <dependency>
+                    <groupId>org.jboss.as</groupId>
+                    <artifactId>jboss-as-arquillian-container-managed</artifactId>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>unpack</id>
+                                <phase>process-test-classes</phase>
+                                <goals>
+                                    <goal>unpack</goal>
+                                </goals>
+                                <configuration>
+                                    <artifactItems>
+                                        <artifactItem>
+                                            <groupId>org.jboss.as</groupId>
+                                            <artifactId>jboss-as-dist</artifactId>
+                                            <version>${version.org.jboss.as}</version>
+                                            <type>zip</type>
+                                            <overWrite>false</overWrite>
+                                            <outputDirectory>${project.build.directory}</outputDirectory>
+                                        </artifactItem>
+                                    </artifactItems>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
     </profiles>
 
 </project>
