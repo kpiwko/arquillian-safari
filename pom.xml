@@ -20,6 +20,7 @@
         <version.org.jboss.bom.hibernate>1.0.0.Final</version.org.jboss.bom.hibernate>
         <version.org.jboss.arquillian>1.0.2.Final</version.org.jboss.arquillian>
         <version.org.jboss.arquillian.drone>1.1.0.CR3</version.org.jboss.arquillian.drone>
+        <version.org.jboss.as>7.1.1.Final</version.org.jboss.as>
 
     </properties>
 
@@ -64,6 +65,11 @@
                 <version>${version.org.jboss.arquillian.drone}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.as</groupId>
+                <artifactId>jboss-as-arquillian-container-remote</artifactId>
+                <version>${version.org.jboss.as}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -186,7 +192,7 @@
             <plugin>
                 <groupId>org.jboss.as.plugins</groupId>
                 <artifactId>jboss-as-maven-plugin</artifactId>
-                <version>7.1.1.Final</version>
+                <version>${version.org.jboss.as}</version>
             </plugin>
         </plugins>
     </build>
@@ -211,6 +217,17 @@
         </profile>
         <profile>
             <id>webdriver</id>
+        </profile>
+        <profile>
+            <id>arq-jbossas-remote</id>
+
+            <dependencies>
+                <dependency>
+                    <groupId>org.jboss.as</groupId>
+                    <artifactId>jboss-as-arquillian-container-remote</artifactId>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
         </profile>
     </profiles>
 
