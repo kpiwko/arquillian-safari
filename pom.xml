@@ -23,11 +23,14 @@
         <version.org.jboss.arquillian.drone>1.1.0.CR3</version.org.jboss.arquillian.drone>
         <version.org.jboss.arquillian.graphene>2.0.0.Alpha2</version.org.jboss.arquillian.graphene>
         <version.org.jboss.shrinkwrap.resolver>2.0.0-alpha-4</version.org.jboss.shrinkwrap.resolver>
+        <version.org.jboss.arquillian.openshift>1.0.0.Beta1</version.org.jboss.arquillian.openshift>
+        <version.org.jboss.arquillian.container.selector>1.0.0-SNAPSHOT</version.org.jboss.arquillian.container.selector>
         <version.org.jboss.as>7.1.1.Final</version.org.jboss.as>
         <version.junit>4.10</version.junit>
 
-        <!-- test properties -->
+        <!-- default test properties -->
         <browserCapabilities>firefox</browserCapabilities>
+        <testContainer>jboss</testContainer>
     </properties>
 
     <licenses>
@@ -102,6 +105,11 @@
                 <groupId>org.jboss.as</groupId>
                 <artifactId>jboss-as-arquillian-container-managed</artifactId>
                 <version>${version.org.jboss.as}</version>
+            </dependency>
+            <dependency>    
+                <groupId>org.jboss.arquillian.container</groupId>
+                <artifactId>arquillian-openshift-express</artifactId>
+                <version>${version.org.jboss.arquillian.openshift}</version>
             </dependency>
             <!-- JUnit -->
             <dependency>
@@ -236,6 +244,7 @@
                 <filtering>true</filtering>
                 <includes>
                     <include>**/arquillian.xml</include>
+                    <include>**/arquillian.launch</include>
                 </includes>
             </testResource>
             <testResource>
@@ -243,6 +252,7 @@
                 <filtering>true</filtering>
                 <excludes>
                     <exclude>**/arquillian.xml</exclude>
+                    <exclude>**/arquillian.launch</exclude>
                 </excludes>
             </testResource>
         </testResources>

@@ -35,6 +35,15 @@
         </configuration>
     </container>
 
+    <container qualifier="openshift">
+        <configuration>
+            <property name="namespace">arqtest</property>
+            <property name="application">testapp</property>
+            <property name="sshUserName">25adb078f95447d9bbc92f85911ecc18</property>
+            <property name="login">kpiwko@redhat.com</property>
+        </configuration>
+    </container>
+
     <extension qualifier="webdriver">
         <property name="browserCapabilities">${browserCapabilities}</property>
     </extension>
