@@ -18,6 +18,7 @@
 
         <version.org.jboss.spec.ee6-web>3.0.1.Final</version.org.jboss.spec.ee6-web>
         <version.org.jboss.bom.hibernate>1.0.0.Final</version.org.jboss.bom.hibernate>
+        <version.org.apache.commons.lang3>3.1</version.org.apache.commons.lang3>
         <version.org.jboss.arquillian>1.0.2.Final</version.org.jboss.arquillian>
         <version.org.jboss.arquillian.drone>1.1.0.CR3</version.org.jboss.arquillian.drone>
         <version.org.jboss.arquillian.graphene>2.0.0.Alpha2</version.org.jboss.arquillian.graphene>
@@ -53,6 +54,12 @@
                 <version>${version.org.jboss.bom.hibernate}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <!-- Other tooling -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${version.org.apache.commons.lang3}</version>
             </dependency>
             <!-- Arquillian -->
             <dependency>
@@ -164,6 +171,11 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+
         <!-- Test dependencies -->
 
         <!-- Arquillian Graphene -->
@@ -189,7 +201,7 @@
 
         <dependency>
             <groupId>org.jboss.arquillian.protocol</groupId>
-            <artifactId>arquillian-protocol-servlet</artifactId>    
+            <artifactId>arquillian-protocol-servlet</artifactId>
             <scope>test</scope>
         </dependency>
 

@@ -16,13 +16,16 @@
  */
 package com.acme.example.service;
 
-import com.acme.example.model.Member;
+import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import java.util.logging.Logger;
+
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import com.acme.example.model.Member;
 
 // The @Stateless annotation eliminates the need for manual transaction demarcation
 @Stateless
@@ -38,7 +41,7 @@ public class MemberRegistration {
     private Event<Member> memberEventSrc;
 
     public void register(Member member) throws Exception {
-        log.info("Registering " + member.getName());
+        log.info("Registering " + ToStringBuilder.reflectionToString(member));
         em.persist(member);
         memberEventSrc.fire(member);
     }
