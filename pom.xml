@@ -23,6 +23,7 @@
         <version.org.jboss.arquillian.drone>1.1.0.CR3</version.org.jboss.arquillian.drone>
         <version.org.jboss.shrinkwrap.resolver>2.0.0-alpha-1</version.org.jboss.shrinkwrap.resolver>
         <version.org.jboss.arquillian.openshift>1.0.0.Beta1</version.org.jboss.arquillian.openshift>
+        <version.org.jboss.arquillian.android>1.0.0.Alpha1</version.org.jboss.arquillian.android>
         <version.org.jboss.arquillian.container.selector>1.0.0-SNAPSHOT</version.org.jboss.arquillian.container.selector>
         <version.org.jboss.as>7.1.1.Final</version.org.jboss.as>
         <version.junit>4.10</version.junit>
@@ -109,6 +110,12 @@
                 <groupId>org.jboss.arquillian.extension</groupId>
                 <artifactId>arquillian-container-selector</artifactId>
                 <version>${version.org.jboss.arquillian.container.selector}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.arquillian.extension</groupId>
+                <artifactId>arquillian-android-depchain</artifactId>
+                <version>${version.org.jboss.arquillian.android}</version>
+                <type>pom</type>
             </dependency>
             <!-- JUnit -->
             <dependency>
@@ -330,6 +337,83 @@
             <properties>
                 <browserCapabilities>chrome</browserCapabilities>
             </properties>
+        </profile>
+
+        <profile>
+            <id>webdriver-android</id>
+
+            <properties>
+                <browserCapabilities>android</browserCapabilities>
+                <version.selenium>2.16.0</version.selenium>
+            </properties>
+
+            <dependencyManagement>
+                <dependencies>
+
+                    <!-- Selenium dependecies -->
+                    <dependency>
+                        <groupId>org.seleniumhq.selenium</groupId>
+                        <artifactId>selenium-api</artifactId>
+                        <version>${version.selenium}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.seleniumhq.selenium</groupId>
+                        <artifactId>selenium-java</artifactId>
+                        <version>${version.selenium}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.seleniumhq.selenium</groupId>
+                        <artifactId>selenium-support</artifactId>
+                        <version>${version.selenium}</version>
+                    </dependency>
+
+                    <!-- Drivers -->
+                    <dependency>
+                        <groupId>org.seleniumhq.selenium</groupId>
+                        <artifactId>selenium-android-driver</artifactId>
+                        <version>${version.selenium}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.seleniumhq.selenium</groupId>
+                        <artifactId>selenium-chrome-driver</artifactId>
+                        <version>${version.selenium}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.seleniumhq.selenium</groupId>
+                        <artifactId>selenium-firefox-driver</artifactId>
+                        <version>${version.selenium}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.seleniumhq.selenium</groupId>
+                        <artifactId>selenium-htmlunit-driver</artifactId>
+                        <version>${version.selenium}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.seleniumhq.selenium</groupId>
+                        <artifactId>selenium-ie-driver</artifactId>
+                        <version>${version.selenium}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.seleniumhq.selenium</groupId>
+                        <artifactId>selenium-iphone-driver</artifactId>
+                        <version>${version.selenium}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.seleniumhq.selenium</groupId>
+                        <artifactId>selenium-remote-driver</artifactId>
+                        <version>${version.selenium}</version>
+                    </dependency>
+                </dependencies>
+            </dependencyManagement>
+
+            <dependencies>
+                <dependency>
+                    <groupId>org.jboss.arquillian.extension</groupId>
+                    <artifactId>arquillian-android-depchain</artifactId>
+                    <type>pom</type>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
         </profile>
 
         <profile>
