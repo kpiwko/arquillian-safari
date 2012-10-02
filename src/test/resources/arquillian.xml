@@ -41,11 +41,26 @@
             <property name="application">testapp</property>
             <property name="sshUserName">25adb078f95447d9bbc92f85911ecc18</property>
             <property name="login">kpiwko@redhat.com</property>
+            <property name="deploymentTimeoutInSeconds">120</property>
         </configuration>
     </container>
 
     <extension qualifier="webdriver">
         <property name="browserCapabilities">${browserCapabilities}</property>
+    </extension>
+
+    <extension qualifier="android">
+        <!-- <property name="verbose">true</property> -->
+        <property name="home">/home/kpiwko/apps/android-sdk-linux_x86</property>
+        <property name="avdName">and41-se</property>
+        <property name="emulatorBootupTimeoutInSeconds">120</property>
+        <!-- Enable on Motorola DEFY+, if connected -->
+        <property name="serialId">0A3B89060A01600D</property>
+    </extension>
+
+    <extension qualifier="android-drone">
+        <!-- <property name="verbose">true</property> -->
+        <property name="androidServerApk">/home/kpiwko/installations/apks/android-server-2.21.0.apk</property>
     </extension>
 
 </arquillian>
