@@ -465,6 +465,23 @@
                 </plugins>
             </build>
         </profile>
+       
+        <profile>
+            <id>arq-openshift</id>
+
+            <properties>
+                <testContainer>openshift</testContainer>
+            </properties>
+
+            <dependencies>
+                <dependency>
+                    <groupId>org.jboss.arquillian.container</groupId>
+                    <artifactId>arquillian-openshift-express</artifactId>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+
 
     </profiles>
 
