@@ -19,12 +19,12 @@
         <version.org.jboss.spec.ee6-web>3.0.1.Final</version.org.jboss.spec.ee6-web>
         <version.org.jboss.bom.hibernate>1.0.0.Final</version.org.jboss.bom.hibernate>
         <version.org.apache.commons.lang3>3.1</version.org.apache.commons.lang3>
-        <version.org.jboss.arquillian>1.0.2.Final</version.org.jboss.arquillian>
-        <version.org.jboss.arquillian.drone>1.1.0.CR3</version.org.jboss.arquillian.drone>
-        <version.org.jboss.shrinkwrap.resolver>2.0.0-alpha-1</version.org.jboss.shrinkwrap.resolver>
+        <version.org.jboss.arquillian>1.0.3.Final</version.org.jboss.arquillian>
+        <version.org.jboss.arquillian.drone>1.2.0.Alpha1</version.org.jboss.arquillian.drone>
+        <version.org.jboss.arquillian.graphene>2.0.0.Alpha3</version.org.jboss.arquillian.graphene>
+        <version.org.jboss.shrinkwrap.resolver>2.0.0-beta-2</version.org.jboss.shrinkwrap.resolver>
         <version.org.jboss.arquillian.openshift>1.0.0.Beta1</version.org.jboss.arquillian.openshift>
-        <version.org.jboss.arquillian.android>1.0.0.Alpha1</version.org.jboss.arquillian.android>
-        <version.org.jboss.arquillian.container.selector>1.0.0-SNAPSHOT</version.org.jboss.arquillian.container.selector>
+        <version.org.jboss.arquillian.android>1.0.0.Alpha2</version.org.jboss.arquillian.android>
         <version.org.jboss.as>7.1.1.Final</version.org.jboss.as>
         <version.junit>4.10</version.junit>
 
@@ -73,13 +73,6 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <dependency>
-                <groupId>org.jboss.shrinkwrap.resolver</groupId>
-                <artifactId>shrinkwrap-resolver-depchain</artifactId>
-                <version>${version.org.jboss.shrinkwrap.resolver}</version>
-                <type>pom</type>
-            </dependency>
-
             <!-- Arquillian -->
             <dependency>
                 <groupId>org.jboss.arquillian</groupId>
@@ -97,19 +90,25 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
+                <groupId>org.jboss.arquillian.graphene</groupId>
+                <artifactId>graphene-webdriver</artifactId>
+                <version>${version.org.jboss.arquillian.graphene}</version>
+                <type>pom</type>
+            </dependency>
+            <dependency>
                 <groupId>org.jboss.as</groupId>
                 <artifactId>jboss-as-arquillian-container-remote</artifactId>
+                <version>${version.org.jboss.as}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.as</groupId>
+                <artifactId>jboss-as-arquillian-container-managed</artifactId>
                 <version>${version.org.jboss.as}</version>
             </dependency>
             <dependency>
                 <groupId>org.jboss.arquillian.container</groupId>
                 <artifactId>arquillian-openshift-express</artifactId>
                 <version>${version.org.jboss.arquillian.openshift}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.jboss.arquillian.extension</groupId>
-                <artifactId>arquillian-container-selector</artifactId>
-                <version>${version.org.jboss.arquillian.container.selector}</version>
             </dependency>
             <dependency>
                 <groupId>org.jboss.arquillian.extension</groupId>
@@ -202,10 +201,10 @@
 
         <!-- Test dependencies -->
 
-        <!-- Arquillian Drone with WebDriver -->
+        <!-- Arquillian Graphene -->
         <dependency>
-            <groupId>org.jboss.arquillian.extension</groupId>
-            <artifactId>arquillian-drone-webdriver-depchain</artifactId>
+            <groupId>org.jboss.arquillian.graphene</groupId>
+            <artifactId>graphene-webdriver</artifactId>
             <type>pom</type>
             <scope>test</scope>
         </dependency>
@@ -236,13 +235,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- workaround for ARQ-1096 -->
-        <dependency>
-            <groupId>org.jboss.arquillian.extension</groupId>
-            <artifactId>arquillian-container-selector</artifactId>
-            <scope>test</scope>
-        </dependency>
-
     </dependencies>
 
     <build>
@@ -257,13 +249,15 @@
                 <filtering>true</filtering>
                 <includes>
                     <include>**/arquillian.xml</include>
+                    <include>**/arquillian.launch</include>
                 </includes>
             </testResource>
             <testResource>
                 <directory>src/test/resources</directory>
-                <filtering>true</filtering>
+                <filtering>false</filtering>
                 <excludes>
                     <exclude>**/arquillian.xml</exclude>
+                    <exclude>**/arquillian.launch</exclude>
                 </excludes>
             </testResource>
         </testResources>
@@ -272,11 +266,37 @@
             <plugins>
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.11</version>
+                    <version>2.14</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-resources-plugin</artifactId>
                     <version>2.5</version>
+                </plugin>
+                <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build 
+                    itself. -->
+                <plugin>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.apache.maven.plugins</groupId>
+                                        <artifactId>maven-dependency-plugin</artifactId>
+                                        <versionRange>[2.1,)</versionRange>
+                                        <goals>
+                                            <goal>unpack</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore></ignore>
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -344,67 +364,7 @@
 
             <properties>
                 <browserCapabilities>android</browserCapabilities>
-                <version.selenium>2.16.0</version.selenium>
             </properties>
-
-            <dependencyManagement>
-                <dependencies>
-
-                    <!-- Selenium dependecies -->
-                    <dependency>
-                        <groupId>org.seleniumhq.selenium</groupId>
-                        <artifactId>selenium-api</artifactId>
-                        <version>${version.selenium}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.seleniumhq.selenium</groupId>
-                        <artifactId>selenium-java</artifactId>
-                        <version>${version.selenium}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.seleniumhq.selenium</groupId>
-                        <artifactId>selenium-support</artifactId>
-                        <version>${version.selenium}</version>
-                    </dependency>
-
-                    <!-- Drivers -->
-                    <dependency>
-                        <groupId>org.seleniumhq.selenium</groupId>
-                        <artifactId>selenium-android-driver</artifactId>
-                        <version>${version.selenium}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.seleniumhq.selenium</groupId>
-                        <artifactId>selenium-chrome-driver</artifactId>
-                        <version>${version.selenium}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.seleniumhq.selenium</groupId>
-                        <artifactId>selenium-firefox-driver</artifactId>
-                        <version>${version.selenium}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.seleniumhq.selenium</groupId>
-                        <artifactId>selenium-htmlunit-driver</artifactId>
-                        <version>${version.selenium}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.seleniumhq.selenium</groupId>
-                        <artifactId>selenium-ie-driver</artifactId>
-                        <version>${version.selenium}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.seleniumhq.selenium</groupId>
-                        <artifactId>selenium-iphone-driver</artifactId>
-                        <version>${version.selenium}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.seleniumhq.selenium</groupId>
-                        <artifactId>selenium-remote-driver</artifactId>
-                        <version>${version.selenium}</version>
-                    </dependency>
-                </dependencies>
-            </dependencyManagement>
 
             <dependencies>
                 <dependency>
@@ -427,6 +387,49 @@
                 </dependency>
             </dependencies>
         </profile>
+
+        <profile>
+            <id>arq-jbossas-managed</id>
+
+            <dependencies>
+                <dependency>
+                    <groupId>org.jboss.as</groupId>
+                    <artifactId>jboss-as-arquillian-container-managed</artifactId>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>unpack</id>
+                                <phase>process-test-classes</phase>
+                                <goals>
+                                    <goal>unpack</goal>
+                                </goals>
+                                <configuration>
+                                    <artifactItems>
+                                        <artifactItem>
+                                            <groupId>org.jboss.as</groupId>
+                                            <artifactId>jboss-as-dist</artifactId>
+                                            <version>${version.org.jboss.as}</version>
+                                            <type>zip</type>
+                                            <overWrite>false</overWrite>
+                                            <outputDirectory>${project.build.directory}</outputDirectory>
+                                        </artifactItem>
+                                    </artifactItems>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
 
         <profile>
             <id>arq-openshift</id>

@@ -4,9 +4,7 @@ import java.io.File;
 
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
-import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
-import org.jboss.shrinkwrap.resolver.api.maven.filter.ScopeFilter;
+import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 
 import com.acme.example.data.MemberRepository;
 import com.acme.example.model.Member;
@@ -29,7 +27,7 @@ public class Deployments {
         war = ArchiveUtils.addWebResourcesRecursively(war, new File("src/main/webapp"));
 
         // add required libraries
-        File[] requiredLibraries = DependencyResolvers.use(MavenDependencyResolver.class).loadEffectivePom("pom.xml").importAnyDependencies(new ScopeFilter("", "compile")).resolveAsFiles();
+        File[] requiredLibraries = Maven.resolver().loadPomFromFile("pom.xml").importRuntimeDependencies().as(File.class);
 
         return war.addAsLibraries(requiredLibraries);
     }
