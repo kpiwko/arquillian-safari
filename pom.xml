@@ -272,7 +272,7 @@
                     <artifactId>maven-resources-plugin</artifactId>
                     <version>2.5</version>
                 </plugin>
-                <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build 
+                <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build
                     itself. -->
                 <plugin>
                     <groupId>org.eclipse.m2e</groupId>
@@ -291,7 +291,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore></ignore>
+                                        <execute />
                                     </action>
                                 </pluginExecution>
                             </pluginExecutions>
