@@ -1,5 +1,6 @@
 target
 .classpath
-.settings
+.settings/*
 .project
 .git*
+!.settings/org.eclipse.wst.validation.prefs
