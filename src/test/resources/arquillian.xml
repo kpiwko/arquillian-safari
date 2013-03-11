@@ -51,12 +51,23 @@
 
     <extension qualifier="webdriver">
         <property name="browserCapabilities">${browserCapabilities}</property>
+        <!-- developer settings -->
+        <!--
+            <property name="remoteReusable">true</property>
+            <property name="remoteAddress">http://localhost:4444/wd/hub</property>
+        -->
+        <!-- end of developer settings -->
+    </extension>
+
+    <extension qualifier="graphene">
+        <!-- Android emulator might really be slow -->
+        <property name="waitModelInterval">10</property>
     </extension>
 
     <extension qualifier="android">
         <!-- <property name="verbose">true</property> -->
         <property name="home">/home/kpiwko/apps/android-sdk-linux_x86</property>
-        <property name="avdName">and41-se</property>
+        <property name="avdName">NexusS</property>
         <property name="emulatorBootupTimeoutInSeconds">120</property>
         <!-- Enable on Motorola DEFY+, if connected -->
         <property name="serialId">0A3B89060A01600D</property>

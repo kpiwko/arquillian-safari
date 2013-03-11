@@ -5,7 +5,7 @@
 
     <groupId>com.acme.example</groupId>
     <artifactId>html5-demoapp</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
     <name>html5-demoapp</name>
@@ -17,16 +17,23 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <version.org.jboss.spec.ee6-web>3.0.1.Final</version.org.jboss.spec.ee6-web>
-        <version.org.jboss.bom.hibernate>1.0.0.Final</version.org.jboss.bom.hibernate>
+        <version.org.jboss.bom>1.0.0.Final</version.org.jboss.bom>
         <version.org.apache.commons.lang3>3.1</version.org.apache.commons.lang3>
         <version.org.jboss.arquillian>1.0.3.Final</version.org.jboss.arquillian>
         <version.org.jboss.arquillian.drone>1.2.0.Alpha1</version.org.jboss.arquillian.drone>
+        <version.org.jboss.shrinkwrap>1.0.1</version.org.jboss.shrinkwrap>
         <version.org.jboss.arquillian.graphene>2.0.0.Alpha3</version.org.jboss.arquillian.graphene>
         <version.org.jboss.shrinkwrap.resolver>2.0.0-beta-2</version.org.jboss.shrinkwrap.resolver>
+        <!-- These are experimental ShrinkWrap versions -->
+        <!-- <version.org.jboss.shrinkwrap>1.1.2</version.org.jboss.shrinkwrap> -->
+        <!-- <version.org.jboss.arquillian.graphene>2.0.0.Beta1-SNAPSHOT</version.org.jboss.arquillian.graphene> -->
+        <!-- <version.org.jboss.shrinkwrap.resolver>2.0.0-beta-3-SNAPSHOT</version.org.jboss.shrinkwrap.resolver> -->
+        <!-- End of experimental versions -->
         <version.org.jboss.arquillian.openshift>1.0.0.Beta1</version.org.jboss.arquillian.openshift>
         <version.org.jboss.arquillian.android>1.0.0.Alpha2</version.org.jboss.arquillian.android>
         <version.org.jboss.as>7.1.1.Final</version.org.jboss.as>
         <version.junit>4.10</version.junit>
+        <version.selenium>2.31.0</version.selenium>
 
         <!-- default test properties -->
         <browserCapabilities>firefox</browserCapabilities>
@@ -55,21 +62,48 @@
             <dependency>
                 <groupId>org.jboss.bom</groupId>
                 <artifactId>jboss-javaee-6.0-with-hibernate</artifactId>
-                <version>${version.org.jboss.bom.hibernate}</version>
+                <version>${version.org.jboss.bom}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <!-- JDF - http://www.jboss.org/jdf/stack/stacks/ -->
+            <!-- This contains Arquillian tooling -->
+            <!--
+                <dependency>
+                <groupId>org.jboss.bom</groupId>
+                <artifactId>jboss-javaee-6.0-with-tools</artifactId>
+                <version>${version.org.jboss.bom}</version>
+                <type>pom</type>
+                <scope>import</scope>
+                </dependency>
+            -->
             <!-- Other tooling -->
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${version.org.apache.commons.lang3}</version>
             </dependency>
+            <!-- ShrinkWrap -->
+            <dependency>
+                <groupId>org.jboss.shrinkwrap</groupId>
+                <artifactId>shrinkwrap-bom</artifactId>
+                <version>${version.org.jboss.shrinkwrap}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <!-- ShrinkWrap Resolver -->
             <dependency>
                 <groupId>org.jboss.shrinkwrap.resolver</groupId>
                 <artifactId>shrinkwrap-resolver-bom</artifactId>
                 <version>${version.org.jboss.shrinkwrap.resolver}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- Selenium -->
+            <dependency>
+                <groupId>org.jboss.arquillian.selenium</groupId>
+                <artifactId>selenium-bom</artifactId>
+                <version>${version.selenium}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -242,7 +276,7 @@
             root) -->
         <finalName>${project.artifactId}</finalName>
 
-        <!-- Enable Arquillian Drone selection via Maven profiles in IDE -->
+        <!-- Enable Arquillian browser and container selection via Maven profiles in IDE -->
         <testResources>
             <testResource>
                 <directory>src/test/resources</directory>
@@ -330,6 +364,8 @@
     </build>
 
     <profiles>
+
+        <!-- This profile does not test anything at all -->
         <profile>
             <id>default</id>
             <activation>
@@ -348,9 +384,12 @@
             </build>
         </profile>
 
+        <!-- This is default browser profile, it runs Firefox -->
         <profile>
-            <id>webdriver</id>
+            <id>webdriver-firefox</id>
         </profile>
+
+        <!-- This is alternative browser profile, it runs Chrome -->
         <profile>
             <id>webdriver-chrome</id>
 
@@ -359,6 +398,7 @@
             </properties>
         </profile>
 
+        <!-- This is alternative browser profile, it runs Android -->
         <profile>
             <id>webdriver-android</id>
 
@@ -376,6 +416,9 @@
             </dependencies>
         </profile>
 
+        <!-- CONTAINER PROFILES -->
+
+        <!-- AS7 remote container for test development -->
         <profile>
             <id>arq-jbossas-remote</id>
 
@@ -388,6 +431,7 @@
             </dependencies>
         </profile>
 
+        <!-- AS7 managed profile, CI test execution -->
         <profile>
             <id>arq-jbossas-managed</id>
 
@@ -401,6 +445,7 @@
 
             <build>
                 <plugins>
+                    <!-- Extract AS7 instance during the run -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-dependency-plugin</artifactId>
@@ -430,7 +475,7 @@
             </build>
         </profile>
 
-
+        <!-- OpenShift profile to run tests on Mobile real devices or in the cloud -->
         <profile>
             <id>arq-openshift</id>
 
@@ -446,6 +491,7 @@
                 </dependency>
             </dependencies>
         </profile>
+
     </profiles>
 
 </project>
