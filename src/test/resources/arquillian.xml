@@ -50,7 +50,7 @@
             <configuration>
                 <property name="namespace">arqtest</property>
                 <property name="application">testapp</property>
-                <property name="sshUserName">bd4bd01cb4bf44bcbb2f2ada6b8b013f</property>
+                <property name="sshUserName">c24e33b312fd4316bed383d9a8162dab</property>
                 <property name="login">kpiwko@redhat.com</property>
                 <property name="deploymentTimeoutInSeconds">120</property>
             </configuration>
@@ -76,6 +76,7 @@
         <!-- <property name="verbose">true</property> -->
         <property name="home">/home/kpiwko/apps/android-sdk-linux_x86</property>
         <property name="avdName">NexusS</property>
+        <property name="abi">armeabi-v7a</property>
         <property name="emulatorBootupTimeoutInSeconds">120</property>
         <!-- Enable on Motorola DEFY+, if connected -->
         <property name="serialId">0A3B89060A01600D</property>
