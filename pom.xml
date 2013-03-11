@@ -38,6 +38,7 @@
         <!-- default test properties -->
         <browserCapabilities>firefox</browserCapabilities>
         <testContainer>jboss</testContainer>
+        <jboss.bind.address>192.168.1.106</jboss.bind.address>
     </properties>
 
     <licenses>

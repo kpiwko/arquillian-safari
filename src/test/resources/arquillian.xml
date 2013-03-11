@@ -33,6 +33,14 @@
         <container qualifier="jboss" default="true">
             <configuration>
                 <property name="jbossHome">target/jboss-as-7.1.1.Final</property>
+                <!-- Note, you need to change jboss.bind.address to an interface visible to both local machine and mobile -->
+                <property name="javaVmArguments">-Xmx512m -XX:MaxPermSize=128m -Djboss.bind.address=${jboss.bind.address}</property>
+                <!-- 
+                <property name="managementAddress">192.168.1.106</property>
+                <property name="managementPort">9999</property>
+                <property name="username">admin</property>
+                <property name="password">adminPass</property>
+                -->
             </configuration>
         </container>
     </group>
