@@ -1,45 +1,43 @@
 package com.acme.example.test;
 
-import static org.jboss.arquillian.graphene.Graphene.element;
-import static org.jboss.arquillian.graphene.Graphene.waitModel;
+import static org.jboss.arquillian.graphene.Graphene.waitGui;
 
-import org.jboss.arquillian.graphene.Graphene;
 import org.jboss.arquillian.graphene.context.GrapheneContext;
-import org.jboss.arquillian.graphene.enricher.findby.FindBy;
-import org.openqa.selenium.By;
+import org.jboss.arquillian.graphene.page.Location;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.android.AndroidDriver;
+import org.openqa.selenium.support.FindBy;
 
-import com.google.common.base.Predicate;
-
+@Location("")
 public class AddMemberPage {
 
     @FindBy(id = "addMember")
-    WebElement addMemberBtn;
+    private WebElement addMemberBtn;
 
     @FindBy(id = "name")
-    WebElement nameField;
+    private WebElement nameField;
 
     @FindBy(id = "email")
-    WebElement emailField;
+    private WebElement emailField;
 
     @FindBy(id = "phoneNumber")
-    WebElement phoneNumberField;
+    private WebElement phoneNumberField;
 
     @FindBy(id = "register")
-    WebElement registerBtn;
+    private WebElement registerBtn;
 
     @FindBy(css = "span.success")
-    WebElement successLabel;
+    private WebElement successLabel;
 
     public void addNewMember(String name, String email, String phoneNumber) {
         // Android has a different layout
-        if (GrapheneContext.holdsInstanceOf(AndroidDriver.class)) {
-            waitModel().withMessage("Add member button is not yet present.").until(element(addMemberBtn).isVisible());
+        // and this call will likely not work
+        if (GrapheneContext.lastContext().getWebDriver(WebDriver.class) instanceof AndroidDriver) {
+            waitGui().withMessage("Add member button is not yet present.").until().element(addMemberBtn).is().visible();
             // standard waitModel approach
             addMemberBtn.click();
-            waitModel().withMessage("Add new member form is not yet present.").until(element(nameField).isVisible());
+            waitGui().withMessage("Add new member form is not yet present.").until().element(nameField).is().visible();
             // if experimental Graphene is enabled
             // Graphene.guardNoRequest(addMemberBtn).click();
         }
@@ -51,7 +49,7 @@ public class AddMemberPage {
         // Guard?
         registerBtn.submit();
 
-        waitModel().withMessage("Registration screen did not occur within 10 seconds.")
-                .until(element(successLabel).isVisible());
+        waitGui().withMessage("Registration screen did not occur within 10 seconds.")
+                .until().element(successLabel).is().visible();
     }
 }

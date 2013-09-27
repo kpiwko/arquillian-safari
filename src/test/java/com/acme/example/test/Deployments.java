@@ -11,13 +11,7 @@ import java.util.Queue;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
-import org.jboss.shrinkwrap.resolver.api.maven.ScopeType;
 import org.jboss.shrinkwrap.resolver.api.maven.archive.importer.MavenImporter;
-import org.jboss.shrinkwrap.resolver.api.maven.filter.MavenResolutionFilter;
-import org.jboss.shrinkwrap.resolver.api.maven.filter.ScopeFilter;
-import org.jboss.shrinkwrap.resolver.api.maven.strategy.DefaultTransitiveExclusionPolicy;
-import org.jboss.shrinkwrap.resolver.api.maven.strategy.MavenResolutionStrategy;
-import org.jboss.shrinkwrap.resolver.api.maven.strategy.TransitiveExclusionPolicy;
 
 import com.acme.example.data.MemberRepository;
 import com.acme.example.model.Member;
@@ -29,17 +23,17 @@ public class Deployments {
 
     public static WebArchive createDeployment() {
         WebArchive archive = null;
-        // if experimental versions are enabled
-        // archive = createDeploymentByImporter();
+        // if use ShrinkWrap importer
+        archive = createDeploymentByImporter();
         // otherwise, construct deployment by hand
-        archive = createDeploymentStepByStep();
+        //archive = createDeploymentStepByStep();
 
         return archive;
     }
 
     public static WebArchive createDeploymentByImporter() {
         return ShrinkWrap.create(MavenImporter.class).loadPomFromFile("pom.xml")
-                .importBuildOutput(new ResolutionScopesStrategy(ScopeType.COMPILE)).as(WebArchive.class);
+                .importBuildOutput().as(WebArchive.class);
     }
 
     public static WebArchive createDeploymentStepByStep() {
@@ -124,31 +118,6 @@ public class Deployments {
                 return allFiles;
             }
         }
-    }
-
-    private static final class ResolutionScopesStrategy implements MavenResolutionStrategy {
-
-        private final ScopeType[] scopes;
-
-        public ResolutionScopesStrategy(ScopeType... scopes) {
-            this.scopes = scopes;
-        }
-
-        @Override
-        public TransitiveExclusionPolicy getTransitiveExclusionPolicy() {
-            return DefaultTransitiveExclusionPolicy.INSTANCE;
-        }
-
-        @Override
-        public MavenResolutionFilter[] getPreResolutionFilters() {
-            return new MavenResolutionFilter[] { new ScopeFilter(scopes) };
-        }
-
-        @Override
-        public MavenResolutionFilter[] getResolutionFilters() {
-            return new MavenResolutionFilter[] { new ScopeFilter(scopes) };
-        }
-
     }
 
 }

@@ -58,7 +58,8 @@
     </group>
 
     <extension qualifier="webdriver">
-        <property name="browserCapabilities">${browserCapabilities}</property>
+        <property name="browser">${browser}</property>
+        <property name="dimensions">1440x900</property>
         <!-- developer settings -->
         <!--
             <property name="remoteReusable">true</property>
@@ -69,7 +70,7 @@
 
     <extension qualifier="graphene">
         <!-- Android emulator might really be slow -->
-        <property name="waitModelInterval">10</property>
+        <property name="waitGuiInterval">10</property>
     </extension>
 
     <extension qualifier="android">
