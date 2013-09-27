@@ -15,19 +15,23 @@
             resources, i.e. build is platform dependent! -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <version.org.jboss.spec.ee6-web>3.0.1.Final</version.org.jboss.spec.ee6-web>
-        <version.org.jboss.bom>1.0.0.Final</version.org.jboss.bom>
+        <version.org.jboss.spec.ee6-web>3.0.2.Final</version.org.jboss.spec.ee6-web>
+        <version.org.jboss.bom>1.0.7.Final</version.org.jboss.bom>
         <version.org.apache.commons.lang3>3.1</version.org.apache.commons.lang3>
         <version.org.jboss.arquillian>1.1.1.Final</version.org.jboss.arquillian>
-        <version.org.jboss.arquillian.drone>1.2.0.CR1</version.org.jboss.arquillian.drone>
         <version.org.jboss.shrinkwrap>1.1.3</version.org.jboss.shrinkwrap>
+
+        <version.org.jboss.arquillian.drone>1.2.0.CR1</version.org.jboss.arquillian.drone>
         <version.org.jboss.arquillian.graphene>2.0.0.CR1</version.org.jboss.arquillian.graphene>
+
+        <version.org.jboss.arquillian.qunit>1.0.0.Alpha2-SNAPSHOT</version.org.jboss.arquillian.qunit>
+        
         <!--
         <version.org.jboss.arquillian.openshift>1.0.0.Beta1</version.org.jboss.arquillian.openshift>
         <version.org.jboss.arquillian.android>1.0.0.Alpha2</version.org.jboss.arquillian.android>
         -->
         <version.org.jboss.as>7.1.1.Final</version.org.jboss.as>
-        <version.junit>4.10</version.junit>
+        <version.junit>4.11</version.junit>
         <version.selenium>2.35.0</version.selenium>
 
         <!-- default test properties -->
@@ -72,12 +76,7 @@
                 <scope>import</scope>
                 </dependency>
             -->
-            <!-- Other tooling -->
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-lang3</artifactId>
-                <version>${version.org.apache.commons.lang3}</version>
-            </dependency>
+            
             <!-- ShrinkWrap -->
             <dependency>
                 <groupId>org.jboss.shrinkwrap</groupId>
@@ -116,6 +115,24 @@
                 <version>${version.org.jboss.arquillian.graphene}</version>
                 <type>pom</type>
             </dependency>
+
+            <dependency>
+                <groupId>org.jboss.arquillian.extension</groupId>
+                <artifactId>arquillian-qunit</artifactId>
+                <version>${version.org.jboss.arquillian.qunit}</version>
+            </dependency>
+            
+            <!--
+            <dependency>
+                <groupId>org.jboss.arquillian.extension</groupId>
+                <artifactId>arquillian-android-depchain</artifactId>
+                <version>${version.org.jboss.arquillian.android}</version>
+                <type>pom</type>
+            </dependency>
+            -->
+            
+            
+            <!-- Test containers -->
             <dependency>
                 <groupId>org.jboss.as</groupId>
                 <artifactId>jboss-as-arquillian-container-remote</artifactId>
@@ -131,14 +148,14 @@
                 <artifactId>arquillian-openshift-express</artifactId>
                 <version>${version.org.jboss.arquillian.openshift}</version>
             </dependency>
-            <!--
+            
+            <!-- Other test tooling -->
             <dependency>
-                <groupId>org.jboss.arquillian.extension</groupId>
-                <artifactId>arquillian-android-depchain</artifactId>
-                <version>${version.org.jboss.arquillian.android}</version>
-                <type>pom</type>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${version.org.apache.commons.lang3}</version>
             </dependency>
-            -->
+            
             <!-- JUnit -->
             <dependency>
                 <groupId>junit</groupId>
@@ -232,10 +249,17 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- ShrinkWrap Resolvers -->
         <dependency>
             <groupId>org.jboss.shrinkwrap.resolver</groupId>
             <artifactId>shrinkwrap-resolver-depchain</artifactId>
             <type>pom</type>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jboss.arquillian.extension</groupId>
+            <artifactId>arquillian-qunit</artifactId>
             <scope>test</scope>
         </dependency>
 
