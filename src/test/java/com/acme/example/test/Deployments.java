@@ -26,13 +26,13 @@ public class Deployments {
         // if use ShrinkWrap importer
         archive = createDeploymentByImporter();
         // otherwise, construct deployment by hand
-        //archive = createDeploymentStepByStep();
+        // archive = createDeploymentStepByStep();
 
         return archive;
     }
 
     public static WebArchive createDeploymentByImporter() {
-        return ShrinkWrap.create(MavenImporter.class).loadPomFromFile("pom.xml")
+        return ShrinkWrap.create(MavenImporter.class, "html5-demoapp.war").loadPomFromFile("pom.xml")
                 .importBuildOutput().as(WebArchive.class);
     }
 

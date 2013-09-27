@@ -8,7 +8,7 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.junit.runner.RunWith;
 
 @RunWith(QUnitRunner.class)
-@QUnitResources("src/test/qunit")
+@QUnitResources("src/")
 public class QUnitDroneTest {
 
     @Deployment
@@ -16,10 +16,9 @@ public class QUnitDroneTest {
         return Deployments.createDeployment();
     }
 
-    @QUnitTest("index.html")
-    public void qunitAjaxTest() {
+    @QUnitTest("test/qunit/index.html")
+    public void qunitTest() {
         // empty body - only the annotations are used
-        System.err.println("ERRER");
     }
 
 }
