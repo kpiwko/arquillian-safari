@@ -17,20 +17,20 @@
     limitations under the License.
 
 -->
-<arquillian xmlns="http://jboss.org/schema/arquillian" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://jboss.org/schema/arquillian
+<arquillian xmlns="http://jboss.org/schema/arquillian" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jboss.org/schema/arquillian
         http://jboss.org/schema/arquillian/arquillian_1_0.xsd">
 
     <!-- Uncomment to have test archives exported to the file system for inspection -->
-    <engine>
-    <property name="deploymentExportPath">target/</property>
-    </engine>
+<!--     <engine> -->
+<!--     <property name="deploymentExportPath">target/</property> -->
+<!--     </engine> -->
 
     <!-- Force the use of the Servlet 3.0 protocol with all containers, as it is the most mature -->
     <defaultProtocol type="Servlet 3.0" />
 
-    <group qualifier="jboss" default="true">
-        <container qualifier="jboss" default="true">
+    <!-- Container configuration when Android is not used -->
+    <group qualifier="jbossas" default="true">
+        <container qualifier="jbossas" default="true">
             <configuration>
                 <property name="jbossHome">target/jboss-as-7.1.1.Final</property>
                 <!-- Note, you need to change jboss.bind.address to an interface visible to both local machine and mobile -->
@@ -44,18 +44,45 @@
             </configuration>
         </container>
     </group>
-
-    <group qualifier="openshift">
-        <container qualifier="openshift" default="true">
+    
+    <!-- Container configuration when Android is used together with JBoss AS -->
+    <group qualifier="jbossas+android">
+        <container qualifier="jbossas" default="true">
             <configuration>
-                <property name="namespace">arqtest</property>
-                <property name="application">testapp</property>
-                <property name="sshUserName">c24e33b312fd4316bed383d9a8162dab</property>
-                <property name="login">kpiwko@redhat.com</property>
-                <property name="deploymentTimeoutInSeconds">120</property>
+                <property name="jbossHome">target/jboss-as-7.1.1.Final</property>
+                <!-- Note, you need to change jboss.bind.address to an interface visible to both local machine and mobile -->
+                <property name="javaVmArguments">-Xmx512m -XX:MaxPermSize=128m -Djboss.bind.address=${jboss.bind.address}</property>
+                <!-- 
+                <property name="managementAddress">192.168.1.106</property>
+                <property name="managementPort">9999</property>
+                <property name="username">admin</property>
+                <property name="password">adminPass</property>
+                -->
+                <property name="adapterImplClass">${containerAdapter}</property>
+            </configuration>
+        </container>
+
+        <container qualifier="android">
+            <configuration>
+                <property name="home">/home/kpiwko/apps/android-sdk-linux_x86</property>
+                <property name="avdName">Nexus4</property>
+                <property name="serialId">e8fd5c98</property>
+                <property name="emulatorOptions">-no-snapshot-save</property>
+                <property name="emulatorBootupTimeoutInSeconds">180</property>
+                <property name="logType">disable</property>
+                <property name="logLevel">E</property>
+                <property name="droneGuestPort">8080</property>
+                <property name="droneHostPort">14444</property>
+                <property name="adapterImplClass">org.arquillian.droidium.container.AndroidDeployableContainer</property>
             </configuration>
         </container>
     </group>
+
+    <!-- Configuration of Droidium extension for web testing -->
+    <extension qualifier="droidium-web">
+        <!-- Path of Android server APK -->
+        <property name="serverApk">/home/kpiwko/installations/apks/android-server-2.32.0.apk</property>
+    </extension>
 
     <extension qualifier="webdriver">
         <property name="browser">${browser}</property>
@@ -63,29 +90,17 @@
         <!-- developer settings -->
         <!--
             <property name="remoteReusable">true</property>
-            <property name="remoteAddress">http://localhost:4444/wd/hub</property>
-        -->
+            -->
+            <!-- 
+            <property name="remote">true</property>
+            -->
+        
         <!-- end of developer settings -->
     </extension>
 
     <extension qualifier="graphene">
         <!-- Android emulator might really be slow -->
-        <property name="waitGuiInterval">10</property>
-    </extension>
-
-    <extension qualifier="android">
-        <!-- <property name="verbose">true</property> -->
-        <property name="home">/home/kpiwko/apps/android-sdk-linux_x86</property>
-        <property name="avdName">NexusS</property>
-        <property name="abi">armeabi-v7a</property>
-        <property name="emulatorBootupTimeoutInSeconds">120</property>
-        <!-- Enable on Motorola DEFY+, if connected -->
-        <property name="serialId">0A3B89060A01600D</property>
-    </extension>
-
-    <extension qualifier="android-drone">
-        <!-- <property name="verbose">true</property> -->
-        <property name="androidServerApk">/home/kpiwko/installations/apks/android-server-2.21.0.apk</property>
+        <property name="waitGuiInterval">30</property>
     </extension>
 
 </arquillian>

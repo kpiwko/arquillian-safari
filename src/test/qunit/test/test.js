@@ -46,7 +46,8 @@ asyncTest('Request current member list', function() {
     expect(1);
 
     $.ajax({
-        url: "http://localhost:8080/html5-demoapp/rest/members",
+        // replace this with externally available IP - should be propagated by Arquillian
+        url: "http://10.0.0.34:8080/html5-demoapp/rest/members",
         dataType: "jsonp",
         jsonp: "jsonpcallback",
         success: function(data) {

@@ -5,6 +5,7 @@ import static org.jboss.arquillian.graphene.Graphene.waitGui;
 import org.jboss.arquillian.graphene.context.GrapheneContext;
 import org.jboss.arquillian.graphene.page.Location;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.android.AndroidDriver;
 import org.openqa.selenium.support.FindBy;
@@ -32,24 +33,22 @@ public class AddMemberPage {
 
     public void addNewMember(String name, String email, String phoneNumber) {
         // Android has a different layout
-        // and this call will likely not work
         if (GrapheneContext.lastContext().getWebDriver(WebDriver.class) instanceof AndroidDriver) {
-            waitGui().withMessage("Add member button is not yet present.").until().element(addMemberBtn).is().visible();
-            // standard waitModel approach
+            // add checks that elements are available on Android
+            waitGui().withMessage("Add member button is not yet present.").ignoring(WebDriverException.class).until()
+                    .element(addMemberBtn).is().visible();
             addMemberBtn.click();
-            waitGui().withMessage("Add new member form is not yet present.").until().element(nameField).is().visible();
-            // if experimental Graphene is enabled
-            // Graphene.guardNoRequest(addMemberBtn).click();
+            waitGui().withMessage("Add new member form is not yet present.").ignoring(WebDriverException.class).until()
+                    .element(phoneNumberField).is().visible();
         }
 
         nameField.sendKeys(name);
         emailField.sendKeys(email);
         phoneNumberField.sendKeys(phoneNumber);
 
-        // Guard?
         registerBtn.submit();
 
         waitGui().withMessage("Registration screen did not occur within 10 seconds.")
-                .until().element(successLabel).is().visible();
+                .ignoring(WebDriverException.class).until().element(successLabel).is().visible();
     }
 }

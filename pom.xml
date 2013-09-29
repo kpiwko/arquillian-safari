@@ -21,22 +21,18 @@
         <version.org.jboss.arquillian>1.1.1.Final</version.org.jboss.arquillian>
         <version.org.jboss.shrinkwrap>1.1.3</version.org.jboss.shrinkwrap>
 
-        <version.org.jboss.arquillian.drone>1.2.0.CR1</version.org.jboss.arquillian.drone>
+        <version.org.jboss.arquillian.drone>1.2.0.Final-SNAPSHOT</version.org.jboss.arquillian.drone>
         <version.org.jboss.arquillian.graphene>2.0.0.CR1</version.org.jboss.arquillian.graphene>
-
+        <version.org.arquillian.droidium>1.0.0.Alpha1</version.org.arquillian.droidium>
         <version.org.jboss.arquillian.qunit>1.0.0.Alpha2-SNAPSHOT</version.org.jboss.arquillian.qunit>
-        
-        <!--
-        <version.org.jboss.arquillian.openshift>1.0.0.Beta1</version.org.jboss.arquillian.openshift>
-        <version.org.jboss.arquillian.android>1.0.0.Alpha2</version.org.jboss.arquillian.android>
-        -->
+
         <version.org.jboss.as>7.1.1.Final</version.org.jboss.as>
         <version.junit>4.11</version.junit>
         <version.selenium>2.35.0</version.selenium>
 
         <!-- default test properties -->
-        <testContainer>jboss</testContainer>
-        <jboss.bind.address>127.0.0.1</jboss.bind.address>
+        <testContainer>jbossas</testContainer>
+        <jboss.bind.address>10.0.0.34</jboss.bind.address>
     </properties>
 
     <licenses>
@@ -116,21 +112,27 @@
                 <type>pom</type>
             </dependency>
 
+            <!-- Arquillian QUnit -->
             <dependency>
                 <groupId>org.jboss.arquillian.extension</groupId>
                 <artifactId>arquillian-qunit</artifactId>
                 <version>${version.org.jboss.arquillian.qunit}</version>
             </dependency>
             
-            <!--
+            <!-- Arquillian Droidium container adapter -->
             <dependency>
-                <groupId>org.jboss.arquillian.extension</groupId>
-                <artifactId>arquillian-android-depchain</artifactId>
-                <version>${version.org.jboss.arquillian.android}</version>
+                <groupId>org.arquillian.container</groupId>
+                <artifactId>arquillian-droidium-container-depchain</artifactId>
+                <version>${version.org.arquillian.droidium}</version>
                 <type>pom</type>
             </dependency>
-            -->
-            
+            <!-- Arquillian Droidium for web testing -->
+            <dependency>
+                <groupId>org.arquillian.extension</groupId>
+                <artifactId>arquillian-droidium-web-depchain</artifactId>
+                <version>${version.org.arquillian.droidium}</version>
+                <type>pom</type>
+            </dependency>
             
             <!-- Test containers -->
             <dependency>
@@ -142,11 +144,6 @@
                 <groupId>org.jboss.as</groupId>
                 <artifactId>jboss-as-arquillian-container-managed</artifactId>
                 <version>${version.org.jboss.as}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.jboss.arquillian.container</groupId>
-                <artifactId>arquillian-openshift-express</artifactId>
-                <version>${version.org.jboss.arquillian.openshift}</version>
             </dependency>
             
             <!-- Other test tooling -->
@@ -262,7 +259,7 @@
             <artifactId>arquillian-qunit</artifactId>
             <scope>test</scope>
         </dependency>
-
+        
         <!-- Needed for running tests (you may also use TestNG) -->
         <dependency>
             <groupId>junit</groupId>
@@ -414,18 +411,25 @@
 
             <properties>
                 <browser>android</browser>
+                <testContainer>jbossas+android</testContainer>
             </properties>
 
-            <!--
-            <dependencies>
+            <dependencies>          
+                <!-- Arquillian Droidium container adapter -->
                 <dependency>
-                    <groupId>org.jboss.arquillian.extension</groupId>
-                    <artifactId>arquillian-android-depchain</artifactId>
+                    <groupId>org.arquillian.container</groupId>
+                    <artifactId>arquillian-droidium-container-depchain</artifactId>
+                    <type>pom</type>
+                    <scope>test</scope>
+                </dependency>      
+                <!-- Arquillian Droidium for web testing -->
+                <dependency>
+                    <groupId>org.arquillian.extension</groupId>
+                    <artifactId>arquillian-droidium-web-depchain</artifactId>
                     <type>pom</type>
                     <scope>test</scope>
                 </dependency>
             </dependencies>
-            -->
         </profile>
 
         <!-- CONTAINER PROFILES -->
@@ -433,6 +437,10 @@
         <!-- AS7 remote container for test development -->
         <profile>
             <id>arq-jbossas-remote</id>
+
+            <properties>
+                <containerAdapter>org.jboss.as.arquillian.container.remote.RemoteDeployableContainer</containerAdapter>
+            </properties>
 
             <dependencies>
                 <dependency>
@@ -446,6 +454,10 @@
         <!-- AS7 managed profile, CI test execution -->
         <profile>
             <id>arq-jbossas-managed</id>
+
+            <properties>
+                <containerAdapter>org.jboss.as.arquillian.container.managed.ManagedDeployableContainer</containerAdapter>
+            </properties>
 
             <activation>
                 <activeByDefault>true</activeByDefault>
