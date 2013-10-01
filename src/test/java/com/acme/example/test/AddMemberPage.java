@@ -5,7 +5,6 @@ import static org.jboss.arquillian.graphene.Graphene.waitGui;
 import org.jboss.arquillian.graphene.context.GrapheneContext;
 import org.jboss.arquillian.graphene.page.Location;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.android.AndroidDriver;
 import org.openqa.selenium.support.FindBy;
@@ -35,10 +34,12 @@ public class AddMemberPage {
         // Android has a different layout
         if (GrapheneContext.lastContext().getWebDriver(WebDriver.class) instanceof AndroidDriver) {
             // add checks that elements are available on Android
-            waitGui().withMessage("Add member button is not yet present.").ignoring(WebDriverException.class).until()
+            waitGui().withMessage("Add member button is not yet present.")/*.ignoring(WebDriverException.class)*/.until()
                     .element(addMemberBtn).is().visible();
+            // ARQGRA-385
+            //Graphene.guardNoRequest(addMemberBtn).click();
             addMemberBtn.click();
-            waitGui().withMessage("Add new member form is not yet present.").ignoring(WebDriverException.class).until()
+            waitGui().withMessage("Add new member form is not yet present.")/*.ignoring(WebDriverException.class)*/.until()
                     .element(phoneNumberField).is().visible();
         }
 
@@ -46,9 +47,12 @@ public class AddMemberPage {
         emailField.sendKeys(email);
         phoneNumberField.sendKeys(phoneNumber);
 
+        // ARQGRA-385
+        //Graphene.guardAjax(registerBtn).submit();
+
         registerBtn.submit();
 
         waitGui().withMessage("Registration screen did not occur within 10 seconds.")
-                .ignoring(WebDriverException.class).until().element(successLabel).is().visible();
+                /*.ignoring(WebDriverException.class)*/.until().element(successLabel).is().visible();
     }
 }

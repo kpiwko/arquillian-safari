@@ -3,5 +3,4 @@ target
 .settings/*
 .project
 .git*
-!.settings/org.eclipse.wst.validation.prefs
 !.settings/.jsdtscope

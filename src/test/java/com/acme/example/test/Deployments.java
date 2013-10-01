@@ -24,9 +24,9 @@ public class Deployments {
     public static WebArchive createDeployment() {
         WebArchive archive = null;
         // if use ShrinkWrap importer
-        archive = createDeploymentByImporter();
+        //archive = createDeploymentByImporter();
         // otherwise, construct deployment by hand
-        // archive = createDeploymentStepByStep();
+        archive = createDeploymentStepByStep();
 
         return archive;
     }
@@ -38,12 +38,14 @@ public class Deployments {
 
     public static WebArchive createDeploymentStepByStep() {
         WebArchive war = ShrinkWrap
-                .create(WebArchive.class)
+                .create(WebArchive.class, "html5-demoapp.war")
                 // add classes
                 .addPackages(true, Member.class.getPackage(), MemberService.class.getPackage(), Resources.class.getPackage(),
                         MemberRepository.class.getPackage(), MemberRegistration.class.getPackage())
                 // add configuration - resources from src/main/resources
-                .addAsResource("META-INF/persistence.xml", "META-INF/persistence.xml").addAsWebInfResource("arquillian-ds.xml");
+                .addAsResource("META-INF/persistence.xml", "META-INF/persistence.xml").addAsWebInfResource("arquillian-ds.xml")
+                // add initial data
+                .addAsResource("import.sql");
 
         // add web pages and other resources
         war = ArchiveUtils.addWebResourcesRecursively(war, new File("src/main/webapp"));

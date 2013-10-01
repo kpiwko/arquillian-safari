@@ -66,13 +66,14 @@
             <configuration>
                 <property name="home">/home/kpiwko/apps/android-sdk-linux_x86</property>
                 <property name="avdName">Nexus4</property>
-                <property name="serialId">e8fd5c98</property>
-                <property name="emulatorOptions">-no-snapshot-save</property>
+                <!-- <property name="serialId">e8fd5c98</property>-->
+                <property name="emulatorOptions">-no-snapshot-save -scale 0.7</property>
                 <property name="emulatorBootupTimeoutInSeconds">180</property>
-                <property name="logType">disable</property>
-                <property name="logLevel">E</property>
+                <property name="logType">output</property>
+                <property name="logLevel">I</property>
                 <property name="droneGuestPort">8080</property>
                 <property name="droneHostPort">14444</property>
+                <property name="logPackageWhitelist">org.openqa.selenium.android.app</property>
                 <property name="adapterImplClass">org.arquillian.droidium.container.AndroidDeployableContainer</property>
             </configuration>
         </container>
