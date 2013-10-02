@@ -23,8 +23,6 @@
 
         <version.org.jboss.arquillian.drone>1.2.0.Final-SNAPSHOT</version.org.jboss.arquillian.drone>
         <version.org.jboss.arquillian.graphene>2.0.0.Final-SNAPSHOT</version.org.jboss.arquillian.graphene>
-        <version.org.arquillian.droidium>1.0.0.Alpha2-SNAPSHOT</version.org.arquillian.droidium>
-        <version.org.jboss.arquillian.qunit>1.0.0.Alpha2</version.org.jboss.arquillian.qunit>
 
         <version.org.jboss.as>7.1.1.Final</version.org.jboss.as>
         <version.junit>4.11</version.junit>
@@ -81,14 +79,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <!-- Selenium -->
-            <dependency>
-                <groupId>org.jboss.arquillian.selenium</groupId>
-                <artifactId>selenium-bom</artifactId>
-                <version>${version.selenium}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
+
             <!-- Arquillian -->
             <dependency>
                 <groupId>org.jboss.arquillian</groupId>
@@ -96,42 +87,6 @@
                 <version>${version.org.jboss.arquillian}</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
-            <!-- Arquillian -->
-            <dependency>
-                <groupId>org.jboss.arquillian.extension</groupId>
-                <artifactId>arquillian-drone-bom</artifactId>
-                <version>${version.org.jboss.arquillian.drone}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.jboss.arquillian.graphene</groupId>
-                <artifactId>graphene-webdriver</artifactId>
-                <version>${version.org.jboss.arquillian.graphene}</version>
-                <type>pom</type>
-            </dependency>
-
-            <!-- Arquillian QUnit -->
-            <dependency>
-                <groupId>org.jboss.arquillian.extension</groupId>
-                <artifactId>arquillian-qunit</artifactId>
-                <version>${version.org.jboss.arquillian.qunit}</version>
-            </dependency>
-            
-            <!-- Arquillian Droidium container adapter -->
-            <dependency>
-                <groupId>org.arquillian.container</groupId>
-                <artifactId>arquillian-droidium-container-depchain</artifactId>
-                <version>${version.org.arquillian.droidium}</version>
-                <type>pom</type>
-            </dependency>
-            <!-- Arquillian Droidium for web testing -->
-            <dependency>
-                <groupId>org.arquillian.extension</groupId>
-                <artifactId>arquillian-droidium-web-depchain</artifactId>
-                <version>${version.org.arquillian.droidium}</version>
-                <type>pom</type>
             </dependency>
             
             <!-- Test containers -->
@@ -238,14 +193,6 @@
 
         <!-- Test dependencies -->
 
-        <!-- Arquillian Graphene -->
-        <dependency>
-            <groupId>org.jboss.arquillian.graphene</groupId>
-            <artifactId>graphene-webdriver</artifactId>
-            <type>pom</type>
-            <scope>test</scope>
-        </dependency>
-
         <!-- ShrinkWrap Resolvers -->
         <dependency>
             <groupId>org.jboss.shrinkwrap.resolver</groupId>
@@ -254,12 +201,6 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.jboss.arquillian.extension</groupId>
-            <artifactId>arquillian-qunit</artifactId>
-            <scope>test</scope>
-        </dependency>
-        
         <!-- Needed for running tests (you may also use TestNG) -->
         <dependency>
             <groupId>junit</groupId>
@@ -268,14 +209,40 @@
         </dependency>
 
         <dependency>
-            <groupId>org.jboss.arquillian.junit</groupId>
-            <artifactId>arquillian-junit-container</artifactId>
-            <scope>test</scope>
+            <groupId>org.jboss.arquillian.spock</groupId>
+            <artifactId>arquillian-spock-container</artifactId>
+            <version>1.0.0.Final-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>org.jboss.arquillian.protocol</groupId>
             <artifactId>arquillian-protocol-servlet</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jayway.restassured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>1.8.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jayway.restassured</groupId>
+            <artifactId>json-path</artifactId>
+            <version>1.8.1</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.spockframework</groupId>
+            <artifactId>spock-core</artifactId>
+            <version>0.7-groovy-2.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>2.1.5</version>
             <scope>test</scope>
         </dependency>
 
@@ -311,11 +278,12 @@
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>2.14</version>
-                    <!--
                     <configuration>
-                        <runOrder>reversealphabetical</runOrder>
+                        <testSourceDirectory>${project.basedir}/src/test/groovy</testSourceDirectory>
+                        <includes>
+                            <include>**/*Specification*</include>
+                        </includes>
                     </configuration>
-                    -->
                 </plugin>
                 <plugin>
                     <artifactId>maven-resources-plugin</artifactId>
@@ -358,7 +326,23 @@
                 <configuration>
                     <source>1.6</source>
                     <target>1.6</target>
+                    <!-- Making this a Groovy based project -->
+                    <compilerId>groovy-eclipse-compiler</compilerId>
                 </configuration>
+                <dependencies>
+                    <!-- see https://jira.codehaus.org/browse/GRECLIPSE-1659 -->
+                    <dependency>
+                        <groupId>org.codehaus.groovy</groupId>
+                        <artifactId>groovy-eclipse-compiler</artifactId>
+                        <version>2.8.0-01</version>
+                        <classifier>greclipse1659</classifier>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.codehaus.groovy</groupId>
+                        <artifactId>groovy-eclipse-batch</artifactId>
+                        <version>2.1.5-03</version>
+                    </dependency>
+                </dependencies>
             </plugin>
             <plugin>
                 <artifactId>maven-war-plugin</artifactId>
@@ -375,67 +359,43 @@
                 <artifactId>jboss-as-maven-plugin</artifactId>
                 <version>${version.org.jboss.as}</version>
             </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>add-integration-tests</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>add-test-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>src/test/groovy</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>add-integration-test-resources</id>
+                        <phase>generate-test-resources</phase>
+                        <goals>
+                            <goal>add-test-resource</goal>
+                        </goals>
+                        <configuration>
+                            <resources>
+                                <resource>
+                                    <directory>src/test/resources</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
     <profiles>
-
-        <profile>
-            <id>webdriver-phantomjs</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-
-            <properties>
-                <browser>phantomjs</browser>
-            </properties>
-
-        </profile>
-
-        <!-- This is alernative browser profile, it runs Firefox -->
-        <profile>
-            <id>webdriver-firefox</id>
-
-            <properties>
-                <browser>firefox</browser>
-            </properties>
-        </profile>
-
-        <!-- This is alternative browser profile, it runs Chrome -->
-        <profile>
-            <id>webdriver-chrome</id>
-
-            <properties>
-                <browser>chrome</browser>
-            </properties>
-        </profile>
-
-        <!-- This is alternative browser profile, it runs Android -->
-        <profile>
-            <id>webdriver-android</id>
-
-            <properties>
-                <browser>android</browser>
-                <testContainer>jbossas+android</testContainer>
-            </properties>
-
-            <dependencies>          
-                <!-- Arquillian Droidium container adapter -->
-                <dependency>
-                    <groupId>org.arquillian.container</groupId>
-                    <artifactId>arquillian-droidium-container-depchain</artifactId>
-                    <type>pom</type>
-                    <scope>test</scope>
-                </dependency>      
-                <!-- Arquillian Droidium for web testing -->
-                <dependency>
-                    <groupId>org.arquillian.extension</groupId>
-                    <artifactId>arquillian-droidium-web-depchain</artifactId>
-                    <type>pom</type>
-                    <scope>test</scope>
-                </dependency>
-            </dependencies>
-        </profile>
 
         <!-- CONTAINER PROFILES -->
 
@@ -507,26 +467,21 @@
                 </plugins>
             </build>
         </profile>
-
-        <!-- OpenShift profile to run tests on Mobile real devices or in the cloud -->
-        <!--
-        <profile>
-            <id>arq-openshift</id>
-
-            <properties>
-                <testContainer>openshift</testContainer>
-            </properties>
-
-            <dependencies>
-                <dependency>
-                    <groupId>org.jboss.arquillian.container</groupId>
-                    <artifactId>arquillian-openshift-express</artifactId>
-                    <scope>test</scope>
-                </dependency>
-            </dependencies>
-        </profile>
-        -->
-
     </profiles>
+
+    <!-- we need to enable following repositories until a stable version of groovy compiler plugin is released -->
+    <repositories>
+        <repository>
+            <id>JBOSS_NEXUS</id>
+            <url>http://repository.jboss.org/nexus/content/groups/public</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>jboss.thirdparty.uploads</id>
+            <url>https://repository.jboss.org/nexus/content/repositories/thirdparty-uploads/</url>
+        </pluginRepository>
+    </pluginRepositories>
 
 </project>
