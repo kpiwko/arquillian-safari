@@ -54,7 +54,7 @@ public class MemberSpecification extends Specification {
         then: "Response code is 200 - passed or 400 - failed"
         shouldFail ? response.statusCode == 400 : response.statusCode == 200
 
-        and:
+        and: "Invalid fields are reported in the respones"
         shouldFail ? invalidFields.each { body.get(it) != null } : true
 
         where:
