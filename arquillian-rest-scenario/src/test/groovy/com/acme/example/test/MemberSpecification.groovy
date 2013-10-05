@@ -13,8 +13,6 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 import com.jayway.restassured.RestAssured
-import com.jayway.restassured.filter.log.RequestLoggingFilter
-import com.jayway.restassured.filter.log.ResponseLoggingFilter
 
 
 @RunWith(ArquillianSputnik)
@@ -27,7 +25,7 @@ public class MemberSpecification extends Specification {
     }
 
     def setupSpec() {
-        RestAssured.filters(new RequestLoggingFilter(System.err), new ResponseLoggingFilter(System.err))
+        //RestAssured.filters(new RequestLoggingFilter(System.err), new ResponseLoggingFilter(System.err))
     }
 
     @ArquillianResource URL root
