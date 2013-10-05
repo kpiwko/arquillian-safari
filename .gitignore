@@ -1,6 +1,8 @@
 target
-.classpath
-.settings/*
-.project
+*/.classpath
+*/.settings/*
+*/.project
 .git*
-!.settings/.jsdtscope
+.project
+.settings/*
+!*/.settings/.jsdtscope
