@@ -5,58 +5,65 @@ import groovy.json.JsonBuilder
 
 import org.jboss.arquillian.container.test.api.Deployment
 import org.jboss.arquillian.spock.ArquillianSputnik
+import org.jboss.arquillian.test.api.ArquillianResource
+import org.jboss.shrinkwrap.api.spec.WebArchive
 import org.junit.runner.RunWith
 
 import spock.lang.Specification
+import spock.lang.Unroll
 
 import com.jayway.restassured.RestAssured
+import com.jayway.restassured.filter.log.RequestLoggingFilter
+import com.jayway.restassured.filter.log.ResponseLoggingFilter
 
 
 @RunWith(ArquillianSputnik)
-public class RestSpecifaction extends Specification {
+public class MemberSpecification extends Specification {
 
 
-    @Deployment(testable = false)
-    def static deployHtml5DemoApp() {
+    @Deployment(testable=false)
+    static WebArchive deployHtml5DemoApp() {
         Deployments.createDeployment()
     }
 
-    def "Add New Member"() {
-        // this is really mock
-        given:
-        assert 1==1
-
-        expect:
-        assert 1==1
+    def setupSpec() {
+        RestAssured.filters(new RequestLoggingFilter(System.err), new ResponseLoggingFilter(System.err))
     }
 
-    // curl -v -H "Accept: application/json" -H "Content-type: application/json" -X POST -d '{"name" : "ddd", "description" :  "ddd" }' http://localhost:8080/ag-push/rest/
-    def "Registering a push application"() {
+    @ArquillianResource URL root
 
+    @Unroll
+    def "Add New Member"() {
 
-        given: "Application ddd is about to be registered......"
+        given: "New Member ${memberName}"
         def request = RestAssured.given()
                 .contentType("application/json")
                 .header("Accept", "application/json")
-                .cookies(authCookies)
                 .body(json {
-                    name "ddd"
-                    description "ddd"
+                    name memberName
+                    email memberEmail
+                    phoneNumber memberPhoneNumber
                 })
+        def shouldFail = !invalidFields.isEmpty()
 
-        when: "Application is registered"
-        def response = RestAssured.given().spec(request).post("${root}rest/applications")
-        def body = response.body().jsonPath()
-        pushAppId = body.get("pushApplicationID")
 
-        then: "Response code is 201"
-        response.statusCode() == 201
+        when: "Member ${memberName} is registered"
+        def response = RestAssured.given().spec(request).post("${root}rest/members")
+        def body = !invalidFields.isEmpty() ? response.body().jsonPath() : new JsonBuilder("{}")
 
-        and: "Push App Id is returned"
-        pushAppId != null
+        then: "Response code is 200 - passed or 400 - failed"
+        shouldFail ? response.statusCode == 400 : response.statusCode == 200
 
-        and: "Application Name is returned"
-        body.get("name") == "ddd"
+        and:
+        shouldFail ? invalidFields.each { body.get(it) != null } : true
+
+        where:
+        memberName | memberEmail | memberPhoneNumber | invalidFields
+        "Jane Smith" | "jane.smith@example.org" | "5551212345" | []
+        "Bob Smith" | "bob.smith@example.org" | "5551234567" | []
+        "Robert Smith" | "robert.smith@example.org" | "55512345" | ["phoneNumber"]
+        "简" | "jane@example.com" | "5551231230" | ["name"]
+        "简" | "jane@example.com" | "555123120" | ["name", "phoneNumber"]
     }
 
     // enable direct invocation of json closure to all test writers

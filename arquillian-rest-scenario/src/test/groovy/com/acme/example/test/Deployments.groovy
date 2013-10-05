@@ -15,7 +15,7 @@ public class Deployments {
 
     static def createDeployment() {
         // if use ShrinkWrap importer
-        createDeploymentByImporter()
+        //createDeploymentByImporter()
         // otherwise, construct deployment by hand
         createDeploymentStepByStep()
     }
@@ -78,7 +78,7 @@ public class Deployments {
             try {
                 String parentCanonicalPath = parent.getCanonicalPath()
                 String fileCanonicalPath = file.getCanonicalPath()
-                return fileCanonicalPath.replace(parentCanonicalPath, "").replace(File.separatorChar, '/')
+                return fileCanonicalPath.replace(parentCanonicalPath, "").replace(File.separatorChar, '/' as char)
             } catch (IOException e) {
                 return file.getPath().replace(File.separatorChar, '/')
             }

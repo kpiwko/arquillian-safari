@@ -21,16 +21,11 @@
         <version.org.jboss.arquillian>1.1.1.Final</version.org.jboss.arquillian>
         <version.org.jboss.shrinkwrap>1.1.3</version.org.jboss.shrinkwrap>
 
-        <version.org.jboss.arquillian.drone>1.2.0.Final-SNAPSHOT</version.org.jboss.arquillian.drone>
-        <version.org.jboss.arquillian.graphene>2.0.0.Final-SNAPSHOT</version.org.jboss.arquillian.graphene>
-
         <version.org.jboss.as>7.1.1.Final</version.org.jboss.as>
         <version.junit>4.11</version.junit>
-        <version.selenium>2.35.0</version.selenium>
 
         <!-- default test properties -->
         <testContainer>jbossas</testContainer>
-        <jboss.bind.address>10.0.0.34</jboss.bind.address>
     </properties>
 
     <licenses>
@@ -253,26 +248,6 @@
             root) -->
         <finalName>${project.artifactId}</finalName>
 
-        <!-- Enable Arquillian browser and container selection via Maven profiles in IDE -->
-        <testResources>
-            <testResource>
-                <directory>src/test/resources</directory>
-                <filtering>true</filtering>
-                <includes>
-                    <include>**/arquillian.xml</include>
-                    <include>**/arquillian.launch</include>
-                </includes>
-            </testResource>
-            <testResource>
-                <directory>src/test/resources</directory>
-                <filtering>false</filtering>
-                <excludes>
-                    <exclude>**/arquillian.xml</exclude>
-                    <exclude>**/arquillian.launch</exclude>
-                </excludes>
-            </testResource>
-        </testResources>
-
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -322,7 +297,7 @@
             <!-- Compiler plugin enforces Java 1.6 compatibility and activates annotation processors -->
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
+                <version>3.1</version>
                 <configuration>
                     <source>1.6</source>
                     <target>1.6</target>
@@ -363,9 +338,10 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.8</version>
                 <executions>
                     <execution>
-                        <id>add-integration-tests</id>
+                        <id>add-test-sources</id>
                         <phase>generate-test-sources</phase>
                         <goals>
                             <goal>add-test-source</goal>
@@ -377,7 +353,7 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>add-integration-test-resources</id>
+                        <id>add-test-resources</id>
                         <phase>generate-test-resources</phase>
                         <goals>
                             <goal>add-test-resource</goal>
@@ -470,12 +446,15 @@
     </profiles>
 
     <!-- we need to enable following repositories until a stable version of groovy compiler plugin is released -->
+    <!--
     <repositories>
         <repository>
             <id>JBOSS_NEXUS</id>
             <url>http://repository.jboss.org/nexus/content/groups/public</url>
         </repository>
     </repositories>
+    -->
+
 
     <pluginRepositories>
         <pluginRepository>

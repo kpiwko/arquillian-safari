@@ -29,79 +29,16 @@
     <defaultProtocol type="Servlet 3.0" />
 
     <!-- Container configuration when Android is not used -->
-    <group qualifier="jbossas" default="true">
-        <container qualifier="jbossas" default="true">
-            <configuration>
-                <property name="jbossHome">target/jboss-as-7.1.1.Final</property>
-                <!-- Note, you need to change jboss.bind.address to an interface visible to both local machine and mobile -->
-                <property name="javaVmArguments">-Xmx512m -XX:MaxPermSize=128m -Djboss.bind.address=${jboss.bind.address}</property>
+    <container qualifier="jbossas" default="true">
+        <configuration>
+            <property name="jbossHome">target/jboss-as-7.1.1.Final</property>            
                 <!-- 
                 <property name="managementAddress">192.168.1.106</property>
                 <property name="managementPort">9999</property>
                 <property name="username">admin</property>
                 <property name="password">adminPass</property>
                 -->
-            </configuration>
-        </container>
-    </group>
-    
-    <!-- Container configuration when Android is used together with JBoss AS -->
-    <group qualifier="jbossas+android">
-        <container qualifier="jbossas" default="true">
-            <configuration>
-                <property name="jbossHome">target/jboss-as-7.1.1.Final</property>
-                <!-- Note, you need to change jboss.bind.address to an interface visible to both local machine and mobile -->
-                <property name="javaVmArguments">-Xmx512m -XX:MaxPermSize=128m -Djboss.bind.address=${jboss.bind.address}</property>
-                <!-- 
-                <property name="managementAddress">192.168.1.106</property>
-                <property name="managementPort">9999</property>
-                <property name="username">admin</property>
-                <property name="password">adminPass</property>
-                -->
-                <property name="adapterImplClass">${containerAdapter}</property>
-            </configuration>
-        </container>
-
-        <container qualifier="android">
-            <configuration>
-                <property name="home">/home/kpiwko/apps/android-sdk-linux_x86</property>
-                <property name="avdName">Nexus4</property>
-                <!-- <property name="serialId">e8fd5c98</property>-->
-                <property name="emulatorOptions">-no-snapshot-save -scale 0.7</property>
-                <property name="emulatorBootupTimeoutInSeconds">180</property>
-                <property name="logType">output</property>
-                <property name="logLevel">I</property>
-                <property name="droneGuestPort">8080</property>
-                <property name="droneHostPort">14444</property>
-                <property name="logPackageWhitelist">org.openqa.selenium.android.app</property>
-                <property name="adapterImplClass">org.arquillian.droidium.container.AndroidDeployableContainer</property>
-            </configuration>
-        </container>
-    </group>
-
-    <!-- Configuration of Droidium extension for web testing -->
-    <extension qualifier="droidium-web">
-        <!-- Path of Android server APK -->
-        <property name="serverApk">/home/kpiwko/installations/apks/android-server-2.32.0.apk</property>
-    </extension>
-
-    <extension qualifier="webdriver">
-        <property name="browser">${browser}</property>
-        <property name="dimensions">1440x900</property>
-        <!-- developer settings -->
-        <!--
-            <property name="remoteReusable">true</property>
-            -->
-            <!-- 
-            <property name="remote">true</property>
-            -->
-        
-        <!-- end of developer settings -->
-    </extension>
-
-    <extension qualifier="graphene">
-        <!-- Android emulator might really be slow -->
-        <property name="waitGuiInterval">30</property>
-    </extension>
+        </configuration>
+    </container>
 
 </arquillian>
