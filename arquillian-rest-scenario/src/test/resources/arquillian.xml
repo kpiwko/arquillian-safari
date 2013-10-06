@@ -31,14 +31,22 @@
     <!-- Container configuration when Android is not used -->
     <container qualifier="jbossas" default="true">
         <configuration>
-            <property name="jbossHome">target/jboss-as-7.1.1.Final</property>            
-                <!-- 
-                <property name="managementAddress">192.168.1.106</property>
-                <property name="managementPort">9999</property>
-                <property name="username">admin</property>
-                <property name="password">adminPass</property>
-                -->
+            <property name="jbossHome">target/jboss-as-7.1.1.Final</property>
+            <property name="javaVmArguments">-Djboss.bind.address=${jboss.bind.address} -Xmx512m -XX:MaxPermSize=128m
+                -javaagent:${byteman.jar}=prop:org.jboss.byteman.verbose=true,address:${jboss.bind.address},port:9091 
+                -Djboss.modules.system.pkgs=org.jboss.byteman -Xbootclasspath/a:${byteman.jar}:${byteman.submit.jar}
+            </property>    
+            <!-- 
+            <property name="managementAddress">192.168.1.106</property>
+            <property name="managementPort">9999</property>
+            <property name="username">admin</property>
+            <property name="password">adminPass</property>
+            -->
         </configuration>
     </container>
+
+    <extension qualifier="byteman">
+        <property name="clientAgentPort">9091</property>
+    </extension>
 
 </arquillian>

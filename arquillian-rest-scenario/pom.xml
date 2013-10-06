@@ -19,12 +19,14 @@
         <version.org.jboss.bom>1.0.7.Final</version.org.jboss.bom>
         <version.org.apache.commons.lang3>3.1</version.org.apache.commons.lang3>
         <version.org.jboss.arquillian>1.1.1.Final</version.org.jboss.arquillian>
+        <version.org.jboss.arquillian.byteman>1.0.0.Alpha2</version.org.jboss.arquillian.byteman>
         <version.org.jboss.shrinkwrap>1.1.3</version.org.jboss.shrinkwrap>
 
         <version.org.jboss.arquillian.spock>1.0.0.Final-SNAPSHOT</version.org.jboss.arquillian.spock>
         <version.org.spockframework>0.7-groovy-2.0</version.org.spockframework>
         <version.org.codehaus.groovy>2.1.5</version.org.codehaus.groovy>
 
+        <version.org.jboss.byteman>2.1.3</version.org.jboss.byteman>
         <version.com.jayway.restassured>1.8.1</version.com.jayway.restassured>
 
         <version.org.jboss.as>7.1.1.Final</version.org.jboss.as>
@@ -107,7 +109,25 @@
                 <artifactId>groovy-all</artifactId>
                 <version>${version.org.codehaus.groovy}</version>
                 <scope>test</scope>
-            </dependency>                        
+            </dependency>   
+            
+            <!-- Arquillian Byteman -->
+            <dependency>
+                <groupId>org.jboss.arquillian.extension</groupId>
+                <artifactId>arquillian-extension-byteman</artifactId>
+                <version>${version.org.jboss.arquillian.byteman}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jboss.byteman</groupId>
+                <artifactId>byteman</artifactId>
+                <version>${version.org.jboss.byteman}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.byteman</groupId>
+                <artifactId>byteman-submit</artifactId>
+                <version>${version.org.jboss.byteman}</version>
+            </dependency>                     
             
             <!-- Test containers -->
             <dependency>
@@ -236,10 +256,16 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Needed for running tests (you may also use TestNG) -->
+        <!-- Arquillian Spock -->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <groupId>org.spockframework</groupId>
+            <artifactId>spock-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
             <scope>test</scope>
         </dependency>
 
@@ -253,7 +279,21 @@
             <artifactId>arquillian-protocol-servlet</artifactId>
             <scope>test</scope>
         </dependency>
+        
+        <!-- Arquillian Byteman -->
+        <dependency>
+            <groupId>org.jboss.arquillian.extension</groupId>
+            <artifactId>arquillian-extension-byteman</artifactId>
+            <scope>test</scope>
+        </dependency>
 
+        <dependency>
+            <groupId>org.jboss.byteman</groupId>
+            <artifactId>byteman-submit</artifactId>
+            <scope>test</scope>
+        </dependency>           
+
+        <!-- REST Assured -->
         <dependency>
             <groupId>com.jayway.restassured</groupId>
             <artifactId>rest-assured</artifactId>
@@ -267,14 +307,8 @@
         </dependency>
 
         <dependency>
-            <groupId>org.spockframework</groupId>
-            <artifactId>spock-core</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-all</artifactId>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
 
@@ -284,6 +318,24 @@
         <!-- Maven will append the version to the finalName (which is the name given to the generated war, and hence the context
             root) -->
         <finalName>${project.artifactId}</finalName>
+        
+        <!-- Enable Arquillian Filtering to get path to Byteman binaries resolved -->
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/arquillian.xml</include>
+                </includes>
+            </testResource>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>**/arquillian.xml</exclude>
+                </excludes>
+            </testResource>
+        </testResources>
 
         <pluginManagement>
             <plugins>
@@ -317,6 +369,7 @@
                                         <versionRange>[2.1,)</versionRange>
                                         <goals>
                                             <goal>unpack</goal>
+                                            <goal>copy</goal>
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
@@ -336,8 +389,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                     <!-- Making this a Groovy based project -->
                     <compilerId>groovy-eclipse-compiler</compilerId>
                 </configuration>
@@ -357,6 +410,12 @@
                 </dependencies>
             </plugin>
             <plugin>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy-eclipse-compiler</artifactId>
+                <version>2.8.0-01</version>
+                <extensions>true</extensions>
+            </plugin>
+            <plugin>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.2</version>
                 <configuration>
@@ -371,40 +430,6 @@
                 <artifactId>jboss-as-maven-plugin</artifactId>
                 <version>${version.org.jboss.as}</version>
             </plugin>
-
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <version>1.8</version>
-                <executions>
-                    <execution>
-                        <id>add-test-sources</id>
-                        <phase>generate-test-sources</phase>
-                        <goals>
-                            <goal>add-test-source</goal>
-                        </goals>
-                        <configuration>
-                            <sources>
-                                <source>src/test/groovy</source>
-                            </sources>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>add-test-resources</id>
-                        <phase>generate-test-resources</phase>
-                        <goals>
-                            <goal>add-test-resource</goal>
-                        </goals>
-                        <configuration>
-                            <resources>
-                                <resource>
-                                    <directory>src/test/resources</directory>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
 
@@ -416,10 +441,6 @@
         <profile>
             <id>arq-jbossas-remote</id>
 
-            <properties>
-                <containerAdapter>org.jboss.as.arquillian.container.remote.RemoteDeployableContainer</containerAdapter>
-            </properties>
-
             <dependencies>
                 <dependency>
                     <groupId>org.jboss.as</groupId>
@@ -427,6 +448,8 @@
                     <scope>test</scope>
                 </dependency>
             </dependencies>
+            
+            <!-- WARNING: you need to ensure that your remote container contains a configuration valid for byteman, check arquillian.xml for more details -->
         </profile>
 
         <!-- AS7 managed profile, CI test execution -->
@@ -434,7 +457,9 @@
             <id>arq-jbossas-managed</id>
 
             <properties>
-                <containerAdapter>org.jboss.as.arquillian.container.managed.ManagedDeployableContainer</containerAdapter>
+                <byteman.jar>${project.build.directory}/byteman.jar</byteman.jar>
+                <byteman.submit.jar>${project.build.directory}/byteman-submit.jar</byteman.submit.jar>
+                <jboss.bind.address>0.0.0.0</jboss.bind.address>
             </properties>
 
             <activation>
@@ -475,6 +500,34 @@
                                     </artifactItems>
                                 </configuration>
                             </execution>
+                            <execution>
+                                <id>add-byteman</id>
+                                <phase>process-test-classes</phase>
+                                <goals>
+                                    <goal>copy</goal>
+                                </goals>
+                                <configuration>
+                                    <artifactItems>
+                                        <artifactItem>
+                                            <groupId>org.jboss.byteman</groupId>
+                                            <artifactId>byteman</artifactId>
+                                            <version>${version.org.jboss.byteman}</version>
+                                            <type>jar</type>
+                                            <overWrite>false</overWrite>
+                                            <destFileName>byteman.jar</destFileName>
+                                        </artifactItem>
+                                        <artifactItem>
+                                            <groupId>org.jboss.byteman</groupId>
+                                            <artifactId>byteman-submit</artifactId>
+                                            <version>${version.org.jboss.byteman}</version>
+                                            <type>jar</type>
+                                            <overWrite>false</overWrite>
+                                            <destFileName>byteman-submit.jar</destFileName>
+                                        </artifactItem>
+                                    </artifactItems>
+                                    <outputDirectory>${project.build.directory}</outputDirectory>
+                                </configuration>
+                            </execution>
                         </executions>
                     </plugin>
                 </plugins>
@@ -483,16 +536,6 @@
     </profiles>
 
     <!-- we need to enable following repositories until a stable version of groovy compiler plugin is released -->
-    <!--
-    <repositories>
-        <repository>
-            <id>JBOSS_NEXUS</id>
-            <url>http://repository.jboss.org/nexus/content/groups/public</url>
-        </repository>
-    </repositories>
-    -->
-
-
     <pluginRepositories>
         <pluginRepository>
             <id>jboss.thirdparty.uploads</id>
