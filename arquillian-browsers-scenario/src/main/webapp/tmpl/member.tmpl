@@ -1,7 +1,7 @@
 <script type="text/template" id="member-tmpl">
 <% var addHeader = true;
 _.each(members, function(member) { 
-    if ( Modernizr.mq( "only all and (max-width: 640px)" ) ) {
+    if ( Modernizr.mobile ) ) {
         addHeader = true;
     }
     %>
