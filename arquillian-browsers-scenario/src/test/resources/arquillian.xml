@@ -85,9 +85,13 @@
         <property name="serverApk">/home/kpiwko/installations/apks/android-server-2.32.0.apk</property>
     </extension>
 
+    <extension qualifier="drone">
+        <property name="instantiationTimeoutInSeconds">0</property>
+    </extension>
+    
     <extension qualifier="webdriver">
         <property name="browser">${browser}</property>
-        <property name="dimensions">1440x900</property>
+        <property name="dimensions">1440x900</property>        
         <!-- developer settings -->
         <!--
             <property name="remoteReusable">true</property>
