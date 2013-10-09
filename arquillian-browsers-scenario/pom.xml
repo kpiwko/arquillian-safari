@@ -23,7 +23,7 @@
 
         <version.org.jboss.arquillian.drone>1.2.0.Final</version.org.jboss.arquillian.drone>
         <version.org.jboss.arquillian.graphene>2.0.0.CR2</version.org.jboss.arquillian.graphene>
-        <version.org.arquillian.droidium>1.0.0.Alpha1</version.org.arquillian.droidium>
+        <version.org.arquillian.droidium>1.0.0.Alpha2</version.org.arquillian.droidium>
         <version.org.jboss.arquillian.qunit>1.0.0.Alpha2</version.org.jboss.arquillian.qunit>
 
         <version.org.jboss.as>7.1.1.Final</version.org.jboss.as>
@@ -122,9 +122,8 @@
             <!-- Arquillian Droidium container adapter -->
             <dependency>
                 <groupId>org.arquillian.container</groupId>
-                <artifactId>arquillian-droidium-container-depchain</artifactId>
+                <artifactId>arquillian-droidium-container</artifactId>
                 <version>${version.org.arquillian.droidium}</version>
-                <type>pom</type>
             </dependency>
             <!-- Arquillian Droidium for web testing -->
             <dependency>
@@ -423,8 +422,7 @@
                 <!-- Arquillian Droidium container adapter -->
                 <dependency>
                     <groupId>org.arquillian.container</groupId>
-                    <artifactId>arquillian-droidium-container-depchain</artifactId>
-                    <type>pom</type>
+                    <artifactId>arquillian-droidium-container</artifactId>
                     <scope>test</scope>
                 </dependency>      
                 <!-- Arquillian Droidium for web testing -->
