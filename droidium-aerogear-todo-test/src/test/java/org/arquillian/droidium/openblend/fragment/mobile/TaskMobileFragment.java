@@ -16,10 +16,7 @@
  */
 package org.arquillian.droidium.openblend.fragment.mobile;
 
-import static org.arquillian.droidium.openblend.utils.Utils.waitUtil;
-
 import org.arquillian.droidium.openblend.drones.Mobile;
-import org.arquillian.droidium.openblend.utils.Utils;
 import org.jboss.arquillian.drone.api.annotation.Drone;
 import org.jboss.arquillian.graphene.fragment.Root;
 import org.openqa.selenium.WebDriver;
@@ -27,6 +24,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 /**
+ * Graphene page fragment for adding a task for mobile client.
  *
  * @author <a href="mailto:smikloso@redhat.com">Stefan Miklosovic</a>
  *
@@ -58,28 +56,16 @@ public class TaskMobileFragment {
     @FindBy(id = "menu_logout")
     private WebElement logoutButton;
 
-    public void addTask() {
+    public void addTask(String taskName, String date, String description) {
         mobileAddButton.click();
-        waitUtil(Utils.NORMAL);
-    }
-
-    public void addName(String taskName) {
         mobileName.sendKeys(taskName);
-    }
-
-    public void addDate(String date) {
         mobileDate.sendKeys(date);
-    }
-
-    public void addDescription(String description) {
         mobileDescription.sendKeys(description);
-    }
-
-    public void submitTask() {
         mobileSaveButton.click();
     }
 
     public void logout() {
         logoutButton.click();
     }
+
 }

@@ -27,14 +27,6 @@ import org.openqa.selenium.WebDriver;
  */
 public class Utils {
 
-    // in milliseconds
-
-    public static final int SLOW = 10000;
-
-    public static final int NORMAL = 3000;
-
-    public static final int FAST = 1000;
-
     public static final String WEB_CONTEXT = "/todo";
 
     public static void openWebPageUrl(WebDriver browser, URL context) {
@@ -42,16 +34,6 @@ public class Utils {
             browser.get(context.toExternalForm() + WEB_CONTEXT);
         } catch (final Exception ignore) {
             ignore.printStackTrace();
-        }
-    }
-
-    // for presentation purposes so people have chance to follow what is happening
-
-    public static void waitUtil(int millis) {
-        try {
-            Thread.sleep(millis);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
     }
 

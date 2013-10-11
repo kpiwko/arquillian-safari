@@ -16,9 +16,6 @@
  */
 package org.arquillian.droidium.openblend.fragment.web;
 
-import static org.arquillian.droidium.openblend.utils.Utils.NORMAL;
-import static org.arquillian.droidium.openblend.utils.Utils.waitUtil;
-
 import org.arquillian.droidium.openblend.drones.Browser;
 import org.jboss.arquillian.drone.api.annotation.Drone;
 import org.jboss.arquillian.graphene.Graphene;
@@ -28,6 +25,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 /**
+ * Graphene page fragment for adding a project into todo list.
  *
  * @author <a href="mailto:smikloso@redhat.com">Stefan Miklosovic</a>
  *
@@ -65,7 +63,6 @@ public class ProjectFragment {
         this.projectTitle.sendKeys(projectTitle);
         addProjectButton.click();
         Graphene.waitGui(browser).until().element(addedProject).is().present();
-        waitUtil(NORMAL);
     }
 
     public WebElement getAddedProject() {

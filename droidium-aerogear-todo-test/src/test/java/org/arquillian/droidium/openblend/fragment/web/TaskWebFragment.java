@@ -16,16 +16,11 @@
  */
 package org.arquillian.droidium.openblend.fragment.web;
 
-import static org.arquillian.droidium.openblend.utils.Utils.FAST;
-import static org.arquillian.droidium.openblend.utils.Utils.NORMAL;
-import static org.arquillian.droidium.openblend.utils.Utils.waitUtil;
-
 import java.util.List;
 
 import org.arquillian.droidium.openblend.drones.Browser;
 import org.jboss.arquillian.drone.api.annotation.Drone;
 import org.jboss.arquillian.graphene.Graphene;
-import org.jboss.arquillian.graphene.findby.ByJQuery;
 import org.jboss.arquillian.graphene.findby.FindByJQuery;
 import org.jboss.arquillian.graphene.fragment.Root;
 import org.openqa.selenium.WebDriver;
@@ -34,6 +29,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 
 /**
+ * Graphene page fragment for adding a task into todo list.
  *
  * @author <a href="mailto:smikloso@redhat.com">Stefan Miklosovic</a>
  *
@@ -76,51 +72,28 @@ public class TaskWebFragment {
         Graphene.waitGui(browser).until().element(addTask).attribute("style").contains("display: none;");
     }
 
-    public void addTitle(String title) {
-        taskTitle.sendKeys(title);
-    }
-
-    public void addDate(String year, String month, String day) {
-        taskDate.clear();
-
-        taskDate.sendKeys(year);
-
-        waitUtil(FAST);
-
-        taskDate.sendKeys(month);
-
-        waitUtil(FAST);
-
-        taskDate.sendKeys(day);
-    }
-
-    public void addDescription(String description) {
-        taskDescription.sendKeys(description);
-    }
-
     public void addToProject(String toProject) {
         dropDownSelect.selectByValue("1");
     }
 
-    public void addTag(String tagName) {
-        for (WebElement element : checkBoxes) {
-            if (element.getText().equals(tagName)) {
-                element.findElement(ByJQuery.selector("input[type=checkbox]")).click();
-            }
-        }
+    public AddedTask getAddedTask() {
+        return new AddedTask(addedTask);
     }
 
-    public void add() {
-        waitUtil(NORMAL);
+    public void addTask(String project, String title, String year, String month, String day, String description) {
+        addToProject(project);
+
+        taskTitle.sendKeys(title);
+
+        taskDate.clear();
+        taskDate.sendKeys(year);
+        taskDate.sendKeys(month);
+        taskDate.sendKeys(day);
+
+        taskDescription.sendKeys(description);
 
         submitButton.click();
         Graphene.waitGui(browser).until().element(addedTask).is().present();
-
-        waitUtil(NORMAL);
-    }
-
-    public AddedTask getAddedTask() {
-        return new AddedTask(addedTask);
     }
 
 }
