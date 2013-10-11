@@ -64,12 +64,13 @@
 
         <container qualifier="android">
             <configuration>
-                <property name="home">/home/kpiwko/apps/android-sdk-linux_x86</property>
-                <property name="avdName">Nexus4</property>
+                <!-- this is defined via ANDROID_HOME environment variable -->
+                <!--<property name="home">/home/kpiwko/apps/android-sdk-linux_x86</property>-->
+                <property name="avdName">android-4.2.2</property>
                 <property name="serialId">e8fd5c98</property>
-                <property name="emulatorOptions">-no-snapstorage -scale 0.7</property>
+                <property name="emulatorOptions">-no-snapstorage -scale 0.9</property>
                 <property name="emulatorBootupTimeoutInSeconds">180</property>
-                <property name="logType">output</property>
+                <property name="logType">disable</property>
                 <property name="logLevel">I</property>
                 <property name="droneGuestPort">8080</property>
                 <property name="droneHostPort">14444</property>
