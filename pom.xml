@@ -26,6 +26,7 @@
     <modules>
         <module>arquillian-browsers-scenario</module>
         <module>arquillian-rest-scenario</module>
+        <module>arquillian-droidium-scenario</module>
     </modules>
 
 </project>

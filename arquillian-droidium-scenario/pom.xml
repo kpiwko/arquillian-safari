@@ -16,8 +16,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <!-- Artifact configuration -->
-    <groupId>org.jboss.aerogear</groupId>
-    <artifactId>aerogear-android-todo-ftest</artifactId>
+    <groupId>com.acme.example</groupId>
+    <artifactId>arquillian-droidium-scenario</artifactId>
     <version>1.0.0</version>
 
     <description>AeroGear Android mobile functional test via Droidium</description>
