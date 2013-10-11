@@ -38,7 +38,7 @@ public class TaskMobileFragment {
 
     @Mobile
     @Drone
-    WebDriver mobile;
+    private WebDriver mobile;
 
     @FindBy(id = "name")
     private WebElement mobileName;

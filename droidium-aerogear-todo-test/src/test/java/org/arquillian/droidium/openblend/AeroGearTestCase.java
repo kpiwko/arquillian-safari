@@ -17,9 +17,12 @@
 package org.arquillian.droidium.openblend;
 
 import static org.arquillian.droidium.openblend.utils.Utils.*;
+
+import java.io.File;
 import java.net.URL;
 
 import org.arquillian.droidium.container.api.AndroidDevice;
+import org.arquillian.droidium.native_.api.Instrumentable;
 import org.arquillian.droidium.openblend.drones.Browser;
 import org.arquillian.droidium.openblend.drones.Mobile;
 import org.arquillian.droidium.openblend.fragment.mobile.LoginMobileFragment;
@@ -27,20 +30,53 @@ import org.arquillian.droidium.openblend.fragment.mobile.TaskMobileFragment;
 import org.arquillian.droidium.openblend.fragment.web.LoginWebFragment;
 import org.arquillian.droidium.openblend.fragment.web.ProjectFragment;
 import org.arquillian.droidium.openblend.fragment.web.TaskWebFragment;
+import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.OperateOnDeployment;
+import org.jboss.arquillian.container.test.api.RunAsClient;
+import org.jboss.arquillian.container.test.api.TargetsContainer;
+import org.jboss.arquillian.drone.api.annotation.Drone;
+import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
 import org.jboss.arquillian.test.api.ArquillianResource;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.spec.EnterpriseArchive;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Assert;
 import org.junit.Test;
-import org.openqa.selenium.By;
+import org.junit.runner.RunWith;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 /**
- *
+ * 
  * @author <a href="mailto:smikloso@redhat.com">Stefan Miklosovic</a>
- *
+ * 
  */
-public class AeroGearTestCase extends AbstractAeroGearTestCase {
+@RunWith(Arquillian.class)
+@RunAsClient
+public class AeroGearTestCase {
+
+    @Drone
+    @Browser
+    WebDriver browser;
+
+    @Drone
+    @Mobile
+    WebDriver mobile;
+
+    @Deployment(name = "todo-mobile-app")
+    @Instrumentable(viaPort = 8081)
+    @TargetsContainer("android")
+    public static JavaArchive getAndroidDeployment() {
+        return ShrinkWrap.createFromZipFile(JavaArchive.class, new File("android-todos.apk"));
+    }
+
+    @Deployment(name = "todo-ear-app")
+    @TargetsContainer("jbossas")
+    public static EnterpriseArchive getJBossASDeployment() {
+        return ShrinkWrap.createFromZipFile(EnterpriseArchive.class, new File("todo-ear.ear"));
+    }
 
     @Browser
     @FindBy(id = "login-box")
@@ -61,7 +97,11 @@ public class AeroGearTestCase extends AbstractAeroGearTestCase {
     @Mobile
     @FindBy(id = "todo")
     private TaskMobileFragment taskMobileFragment;
-
+    
+    @Browser
+    @FindBy(id = "logout-btn")
+    private WebElement logoutButton;
+    
     @Test
     @InSequence(1)
     @OperateOnDeployment("todo-ear-app")
@@ -154,7 +194,7 @@ public class AeroGearTestCase extends AbstractAeroGearTestCase {
     @InSequence(8)
     @OperateOnDeployment("todo-ear-app")
     public void logoutFromWebClient() {
-        browser.findElement(By.id("logout-btn")).click();
+        logoutButton.click();
         waitUtil(SLOW);
     }
 }
