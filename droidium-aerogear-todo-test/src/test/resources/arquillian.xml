@@ -19,7 +19,7 @@
             <configuration>
                 <!-- Name of Android container to start or use during tests. This property is filtered
                     meaning it is set in profile in pom.xml under the same name of the property. -->
-                <property name="avdName">${android.avd.name}</property>
+                <property name="avdName">${name.avd}</property>
                 <property name="emulatorOptions">${android.emulator.options}</property>
                 <property name="emulatorBootupTimeoutInSeconds">600</property>
                 <property name="logType">disable</property>
@@ -33,16 +33,15 @@
     </group>
 
     <!-- Support for Arquillian Droidium Native extension
-        for testing native Android applications via Selendroid -->
+        for testing native Android applications -->
     <extension qualifier="droidium-native">
-        <!-- path you your selendroid-server.apk -->
         <property name="serverApk">selendroid-server-0.5.1.apk</property>
     </extension>
 
     <!-- This instance of WebDriver will control deployed EAR application -->
     <extension qualifier="webdriver-browser">
         <property name="browser">firefox</property>
-        <property name="remoteAddress">http://localhost:8080/wd/hub</property>
+        <property name="remoteAddress">http://localhost:14444/wd/hub</property>
     </extension>
 
     <!-- This instance of WebDriver will control deployed APK application -->

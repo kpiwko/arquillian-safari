@@ -28,7 +28,7 @@ import org.openqa.selenium.support.FindBy;
 public class LoginMobileFragment {
 
     @Root
-    WebElement root;
+    private WebElement root;
 
     @FindBy(id = "username_field")
     private WebElement usernameField;
