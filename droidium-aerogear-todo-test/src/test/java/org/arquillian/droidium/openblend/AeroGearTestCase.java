@@ -115,7 +115,6 @@ public class AeroGearTestCase {
     @OperateOnDeployment("todo-ear-app")
     public void addProject() {
 
-        projectFragment.click();
         projectFragment.addProject("groceries");
 
         Assert.assertEquals(projectFragment.getAddedProject().getText(), "groceries");
@@ -126,7 +125,6 @@ public class AeroGearTestCase {
     @OperateOnDeployment("todo-ear-app")
     public void addTask() {
 
-        taskFragment.click();
         taskFragment.addTask("groceries", "buy some milk", "2020", "10", "20", "buy some fresh milk around the corner");
 
         Assert.assertEquals(taskFragment.getAddedTask().getTitle(), "buy some milk");

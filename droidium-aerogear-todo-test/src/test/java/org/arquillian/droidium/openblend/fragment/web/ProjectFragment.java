@@ -60,6 +60,7 @@ public class ProjectFragment {
     }
 
     public void addProject(String projectTitle) {
+        click();
         this.projectTitle.sendKeys(projectTitle);
         addProjectButton.click();
         Graphene.waitGui(browser).until().element(addedProject).is().present();

@@ -81,6 +81,9 @@ public class TaskWebFragment {
     }
 
     public void addTask(String project, String title, String year, String month, String day, String description) {
+
+        click();
+
         addToProject(project);
 
         taskTitle.sendKeys(title);
