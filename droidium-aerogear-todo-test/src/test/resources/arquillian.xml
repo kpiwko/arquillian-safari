@@ -41,7 +41,6 @@
     <!-- This instance of WebDriver will control deployed EAR application -->
     <extension qualifier="webdriver-browser">
         <property name="browser">firefox</property>
-        <property name="remoteAddress">http://localhost:14444/wd/hub</property>
     </extension>
 
     <!-- This instance of WebDriver will control deployed APK application -->
