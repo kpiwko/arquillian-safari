@@ -49,9 +49,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 /**
- * 
+ *
  * @author <a href="mailto:smikloso@redhat.com">Stefan Miklosovic</a>
- * 
+ *
  */
 @RunWith(Arquillian.class)
 @RunAsClient
@@ -97,23 +97,17 @@ public class AeroGearTestCase {
     @Mobile
     @FindBy(id = "todo")
     private TaskMobileFragment taskMobileFragment;
-    
+
     @Browser
     @FindBy(id = "logout-btn")
     private WebElement logoutButton;
-    
+
     @Test
     @InSequence(1)
     @OperateOnDeployment("todo-ear-app")
     public void loginUserInWebClient(@ArquillianResource URL context) {
         openWebPageUrl(browser, context);
-
-        loginFragment.writeUsername("john");
-        loginFragment.writePassword("123");
-
-        waitUtil(NORMAL);
-
-        loginFragment.submitForm();
+        loginFragment.login("john", "123");
     }
 
     @Test
@@ -131,47 +125,32 @@ public class AeroGearTestCase {
     @InSequence(3)
     @OperateOnDeployment("todo-ear-app")
     public void addTask() {
+
         taskFragment.click();
-        taskFragment.addTitle("buy some milk");
-        taskFragment.addDate("2020", "10", "20");
-        taskFragment.addDescription("buy some fresh milk around the corner");
-        taskFragment.addToProject("groceries");
-        taskFragment.add();
+        taskFragment.addTask("groceries", "buy some milk", "2020", "10", "20", "buy some fresh milk around the corner");
 
         Assert.assertEquals(taskFragment.getAddedTask().getTitle(), "buy some milk");
-        Assert.assertEquals(taskFragment.getAddedTask().getDate(), "2020-10-21");
         Assert.assertEquals(taskFragment.getAddedTask().getDescription(), "buy some fresh milk around the corner");
 
-        waitUtil(NORMAL);
     }
 
     @Test
     @InSequence(4)
     @OperateOnDeployment("todo-mobile-app")
     public void loginUserInMobile(@ArquillianResource AndroidDevice device) {
+
         device.getActivityManagerProvider()
-            .getActivityManager().startActivity("org.jboss.aerogear.todo.activities.LoginActivity");
+            .getActivityManager()
+            .startActivity("org.jboss.aerogear.todo.activities.LoginActivity");
 
-        loginMobileFragment.writeUsername("john");
-        loginMobileFragment.writePassword("123");
-        loginMobileFragment.login();
-
-        waitUtil(NORMAL);
-
+        loginMobileFragment.login("john", "123");
     }
 
     @Test
     @InSequence(5)
     @OperateOnDeployment("todo-mobile-app")
     public void addMobileTask() {
-        taskMobileFragment.addTask();
-
-        taskMobileFragment.addName("mobile task");
-        taskMobileFragment.addDate("2014-10-20");
-        taskMobileFragment.addDescription("task from mobile phone!");
-        taskMobileFragment.submitTask();
-
-        waitUtil(NORMAL);
+        taskMobileFragment.addTask("mobile task", "2014-10-20", "task from mobile phone!");
     }
 
     @Test
@@ -179,7 +158,6 @@ public class AeroGearTestCase {
     @OperateOnDeployment("todo-ear-app")
     public void seeMobileTaskInWebClient() {
         browser.navigate().refresh();
-        waitUtil(SLOW);
     }
 
     @Test
@@ -187,7 +165,6 @@ public class AeroGearTestCase {
     @OperateOnDeployment("todo-mobile-app")
     public void logoutFromMobileClient() {
         taskMobileFragment.logout();
-        waitUtil(FAST);
     }
 
     @Test
@@ -195,6 +172,5 @@ public class AeroGearTestCase {
     @OperateOnDeployment("todo-ear-app")
     public void logoutFromWebClient() {
         logoutButton.click();
-        waitUtil(SLOW);
     }
 }

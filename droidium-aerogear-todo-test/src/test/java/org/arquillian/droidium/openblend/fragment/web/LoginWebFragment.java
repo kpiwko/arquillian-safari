@@ -25,6 +25,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 /**
+ * Graphene page fragment for login into web client.
  *
  * @author <a href="mailto:smikloso@redhat.com">Stefan Miklosovic</a>
  *
@@ -47,15 +48,9 @@ public class LoginWebFragment {
     @FindBy(id = "login-submit")
     private WebElement loginButton;
 
-    public void writeUsername(String username) {
+    public void login(String username, String password) {
         usernameField.sendKeys(username);
-    }
-
-    public void writePassword(String password) {
         passwordField.sendKeys(password);
-    }
-
-    public void submitForm() {
         loginButton.click();
         Graphene.waitGui(browser).until().element(root).is().not().visible();
     }

@@ -35,6 +35,7 @@
         <maven.compiler.source>1.6</maven.compiler.source>
         <maven.compiler.target>1.6</maven.compiler.target>
         <android.emulator.options></android.emulator.options>
+        <name.avd>android-4.2.2</name.avd>
     </properties>
 
     <!-- Dependency Management -->
