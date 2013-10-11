@@ -67,7 +67,7 @@
                 <property name="home">/home/kpiwko/apps/android-sdk-linux_x86</property>
                 <property name="avdName">Nexus4</property>
                 <property name="serialId">e8fd5c98</property>
-                <property name="emulatorOptions">-no-snapshot-save -scale 0.7</property>
+                <property name="emulatorOptions">-no-snapstorage -scale 0.7</property>
                 <property name="emulatorBootupTimeoutInSeconds">180</property>
                 <property name="logType">output</property>
                 <property name="logLevel">I</property>
