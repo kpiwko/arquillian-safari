@@ -1,34 +1,22 @@
-=== What does it do?
+= Arquillian Safari
 
-https://github.com/aerogear/TODO[Aerogear TODO project]
-
-http://aerogear.org[AeroGear project]
-
-https://github.com/arquillian/arquillian-droidium[Arquillian Droidium project]
+Arquillian Safari is a show case for following test scenarios:
 
 
-There is AeroGear TODO web app as ear and Android native application as a client for it.
+[horizontal]
 
-It deploys ear application to JBoss AS and Android TODO client application to emulator. Then there 
-are two instances of WebDriver - one interacts with web application and another one with mobile phone.
+* Functional tests for desktop and mobile browsers
+* Web Page abstractions
+* Easy switching between browsers
 
-Test mimics that user adds some project and task into web page and after it, we are logged in with 
-mobile WebDriver and we are instrumenting native Android application. We logged there as well, we 
-see that task we added in web client is shown in mobile phone. After it, we add some task in mobile 
-phone and when done, we refresh page in web client and we see that task added in mobile phone is displayed 
-there as well.
 
-If you know Arquillian Graphene, very cool feature is that it uses Page fragments which will work even on 
-native Android activity. There is almost no difference between mobile and web testing and we can interleave 
-that easilly.
 
-When you are executing tests, you have to set name of (possibly started) AVD
-you want to use for test executions. You _have to_ provide this information 
-for Maven otherwise tests will fail.
+== Requirements
 
-`mvn clean test -Dname.avd=name_of_avd`
+* Java
+* Maven (version 3.0 and above)
+* Android SDK and ANDRODI_HOME environment variable that point to it
+* Android 4.2.2 libraries installed in Android SDK
 
-This tests uses Selendroid server APK from http://dominikdary.github.io/selendroid/[Selendroid] project.
 
-You have to have `jarsigner`, `keytool` and so on in your system. You are usually good with default JDK installation.
-You should have these commands in `$JAVA_HOME`.
+
