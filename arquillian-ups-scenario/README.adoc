@@ -1,0 +1,22 @@
+= Arquillian Safari
+
+Arquillian Safari is a show case for following test scenarios:
+
+
+[horizontal]
+
+* Functional tests for desktop and mobile browsers
+* Web Page abstractions
+* Easy switching between browsers
+
+
+
+== Requirements
+
+* Java
+* Maven (version 3.0 and above)
+* Android SDK and ANDRODI_HOME environment variable that point to it
+* Android 4.2.2 libraries installed in Android SDK
+
+
+
