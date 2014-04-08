@@ -23,6 +23,7 @@
                 <property name="emulatorOptions">${android.emulator.options}</property>
                 <property name="emulatorBootupTimeoutInSeconds">600</property>
                 <property name="logType">disable</property>
+                <property name="target">android-19</property>
             </configuration>
         </container>
         <container qualifier="jbossas">
@@ -35,7 +36,7 @@
     <!-- Support for Arquillian Droidium Native extension
         for testing native Android applications -->
     <extension qualifier="droidium-native">
-        <property name="serverApk">selendroid-server-0.5.1.apk</property>
+        <property name="serverApk">selendroid-server-0.9.0.apk</property>
     </extension>
 
     <!-- This instance of WebDriver will control deployed EAR application -->
@@ -47,6 +48,10 @@
     <extension qualifier="webdriver-mobile">
         <property name="browser">android</property>
         <property name="remoteAddress">http://localhost:8081/wd/hub</property>
+    </extension>
+    
+    <extension qualifier="graphene">
+        <property name="waitGuiInterval">5</property>
     </extension>
 
 </arquillian>

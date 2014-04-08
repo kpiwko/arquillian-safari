@@ -25,26 +25,25 @@
     <!-- Properties -->
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <version.arquillian.core>1.1.1.Final</version.arquillian.core>
-        <version.shrinkwrap_shrinkwrap>1.1.3</version.shrinkwrap_shrinkwrap>
-        <version.org.jboss.arquillian.drone>1.2.0.Final</version.org.jboss.arquillian.drone>
-        <version.org.jboss.arquillian.graphene2>2.0.0.CR2</version.org.jboss.arquillian.graphene2>
-        <version.droidium>1.0.0.Alpha2</version.droidium>
+        <version.arquillian.core>1.1.4.Final</version.arquillian.core>
+        <version.org.jboss.arquillian.drone>1.2.4.Final</version.org.jboss.arquillian.drone>
+        <version.org.jboss.arquillian.graphene2>2.0.1.Final</version.org.jboss.arquillian.graphene2>
+        <version.droidium>1.0.0.Alpha5</version.droidium>
         <version.org.jboss.as>7.1.1.Final</version.org.jboss.as>
         <version.junit>4.11</version.junit>
         <maven.compiler.source>1.6</maven.compiler.source>
         <maven.compiler.target>1.6</maven.compiler.target>
-        <android.emulator.options>-no-snapstorage -scale 0.9</android.emulator.options>
-        <name.avd>android-4.2.2</name.avd>
+        <android.emulator.options>-no-snapstorage -scale 0.8 -skin 768x1280</android.emulator.options>
+        <name.avd>android-4.4.2</name.avd>
     </properties>
 
     <!-- Dependency Management -->
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.jboss.shrinkwrap</groupId>
-                <artifactId>shrinkwrap-bom</artifactId>
-                <version>${version.shrinkwrap_shrinkwrap}</version>
+                <groupId>org.jboss.arquillian</groupId>
+                <artifactId>arquillian-bom</artifactId>
+                <version>${version.arquillian.core}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -52,13 +51,6 @@
                 <groupId>org.jboss.arquillian.extension</groupId>
                 <artifactId>arquillian-drone-bom</artifactId>
                 <version>${version.org.jboss.arquillian.drone}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.jboss.arquillian</groupId>
-                <artifactId>arquillian-bom</artifactId>
-                <version>${version.arquillian.core}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -72,25 +64,20 @@
                 <groupId>org.arquillian.container</groupId>
                 <artifactId>arquillian-droidium-container</artifactId>
                 <version>${version.droidium}</version>
-                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.arquillian.extension</groupId>
-                <artifactId>arquillian-droidium-native-depchain</artifactId>
+                <artifactId>arquillian-droidium-native</artifactId>
                 <version>${version.droidium}</version>
-                <type>pom</type>
-                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.jboss.as</groupId>
                 <artifactId>jboss-as-arquillian-container-managed</artifactId>
                 <version>${version.org.jboss.as}</version>
-                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
-                <scope>test</scope>
                 <version>${version.junit}</version>
             </dependency>
         </dependencies>
@@ -113,16 +100,9 @@
         <!-- Arquillian Droidium Native extension for native Android application ftesting -->
         <dependency>
             <groupId>org.arquillian.extension</groupId>
-            <artifactId>arquillian-droidium-native-depchain</artifactId>
-            <type>pom</type>
+            <artifactId>arquillian-droidium-native</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.arquillian.extension</groupId>
-            <artifactId>arquillian-drone-webdriver-depchain</artifactId>
-            <type>pom</type>
-            <scope>test</scope>
-        </dependency>
+        </dependency>        
         <dependency>
             <groupId>org.jboss.arquillian.graphene</groupId>
             <artifactId>graphene-webdriver</artifactId>
