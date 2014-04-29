@@ -1,5 +1,6 @@
 package com.acme.example.test;
 
+import org.jboss.arquillian.graphene.Graphene;
 import org.jboss.arquillian.graphene.context.GrapheneContext;
 import org.jboss.arquillian.graphene.page.Location;
 import org.jboss.arquillian.graphene.proxy.GrapheneProxyInstance;
@@ -39,7 +40,7 @@ public class AddMemberPage {
             waitGui().withMessage("Add member button is not yet present.")/* .ignoring(WebDriverException.class) */.until()
                 .element(addMemberBtn).is().visible();
             // ARQGRA-385
-            // Graphene.guardNoRequest(addMemberBtn).click();
+            //Graphene.guardNoRequest(addMemberBtn).click();
             addMemberBtn.click();
             waitGui().withMessage("Add new member form is not yet present.")/* .ignoring(WebDriverException.class) */.until()
                 .element(phoneNumberField).is().visible();
@@ -50,7 +51,7 @@ public class AddMemberPage {
         phoneNumberField.sendKeys(phoneNumber);
 
         // ARQGRA-385
-        // Graphene.guardAjax(registerBtn).submit();
+        //Graphene.guardAjax(registerBtn).submit();
 
         registerBtn.submit();
 

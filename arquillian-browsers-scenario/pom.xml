@@ -9,10 +9,8 @@
 
     <name>arquillian-browsers-scenario</name>
     <properties>
-        <!-- Explicitly declaring the source encoding eliminates the following
-            message: -->
-        <!-- [WARNING] Using platform encoding (UTF-8 actually) to copy filtered
-            resources, i.e. build is platform dependent! -->
+        <!-- Explicitly declaring the source encoding eliminates the following message: -->
+        <!-- [WARNING] Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent! -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <version.org.jboss.spec.ee6-web>3.0.2.Final</version.org.jboss.spec.ee6-web>
@@ -20,14 +18,15 @@
         <version.org.apache.commons.lang3>3.1</version.org.apache.commons.lang3>
         <version.org.jboss.arquillian>1.1.4.Final</version.org.jboss.arquillian>
 
-        <version.org.jboss.arquillian.drone>2.0.0.Alpha1</version.org.jboss.arquillian.drone>
-        <version.org.jboss.arquillian.graphene>2.0.2.Final</version.org.jboss.arquillian.graphene>
+        <!-- Don't touch versions of Drone, Graphene and Droidium until we have Droidium with web plugin based on Drone 2.x and fixed Graphene -->
+        <version.org.jboss.arquillian.drone>1.2.4.Final</version.org.jboss.arquillian.drone>
+        <version.org.jboss.arquillian.graphene>2.0.1.Final</version.org.jboss.arquillian.graphene>        
         <version.org.arquillian.droidium>1.0.0.Alpha5</version.org.arquillian.droidium>
         <version.org.jboss.arquillian.qunit>1.0.0.Alpha2</version.org.jboss.arquillian.qunit>
 
         <version.org.jboss.as>7.1.1.Final</version.org.jboss.as>
         <version.junit>4.11</version.junit>
-        <version.selenium>2.41.0</version.selenium>
+        <version.selenium>2.39.0</version.selenium>
 
         <!-- default test properties -->
         <testContainer>jbossas</testContainer>
@@ -62,16 +61,8 @@
             </dependency>
             <!-- JDF - http://www.jboss.org/jdf/stack/stacks/ -->
             <!-- This contains Arquillian tooling -->
-            <!--
-                <dependency>
-                <groupId>org.jboss.bom</groupId>
-                <artifactId>jboss-javaee-6.0-with-tools</artifactId>
-                <version>${version.org.jboss.bom}</version>
-                <type>pom</type>
-                <scope>import</scope>
-                </dependency>
-            -->
-            
+            <!-- <dependency> <groupId>org.jboss.bom</groupId> <artifactId>jboss-javaee-6.0-with-tools</artifactId> <version>${version.org.jboss.bom}</version> <type>pom</type> <scope>import</scope> </dependency> -->
+
             <!-- Selenium -->
             <dependency>
                 <groupId>org.jboss.arquillian.selenium</groupId>
@@ -109,7 +100,7 @@
                 <artifactId>arquillian-qunit</artifactId>
                 <version>${version.org.jboss.arquillian.qunit}</version>
             </dependency>
-            
+
             <!-- Arquillian Droidium container adapter -->
             <dependency>
                 <groupId>org.arquillian.container</groupId>
@@ -119,11 +110,10 @@
             <!-- Arquillian Droidium for web testing -->
             <dependency>
                 <groupId>org.arquillian.extension</groupId>
-                <artifactId>arquillian-droidium-web-depchain</artifactId>
+                <artifactId>arquillian-droidium-web</artifactId>
                 <version>${version.org.arquillian.droidium}</version>
-                <type>pom</type>
             </dependency>
-            
+
             <!-- Test containers -->
             <dependency>
                 <groupId>org.jboss.as</groupId>
@@ -135,14 +125,14 @@
                 <artifactId>jboss-as-arquillian-container-managed</artifactId>
                 <version>${version.org.jboss.as}</version>
             </dependency>
-            
+
             <!-- Other test tooling -->
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${version.org.apache.commons.lang3}</version>
             </dependency>
-            
+
             <!-- JUnit -->
             <dependency>
                 <groupId>junit</groupId>
@@ -249,7 +239,7 @@
             <artifactId>arquillian-qunit</artifactId>
             <scope>test</scope>
         </dependency>
-        
+
         <!-- Needed for running tests (you may also use TestNG) -->
         <dependency>
             <groupId>junit</groupId>
@@ -272,8 +262,7 @@
     </dependencies>
 
     <build>
-        <!-- Maven will append the version to the finalName (which is the name given to the generated war, and hence the context
-            root) -->
+        <!-- Maven will append the version to the finalName (which is the name given to the generated war, and hence the context root) -->
         <finalName>${project.artifactId}</finalName>
 
         <!-- Enable Arquillian browser and container selection via Maven profiles in IDE -->
@@ -301,18 +290,13 @@
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>2.16</version>
-                    <!--
-                    <configuration>
-                        <runOrder>reversealphabetical</runOrder>
-                    </configuration>
-                    -->
+                    <!-- <configuration> <runOrder>reversealphabetical</runOrder> </configuration> -->
                 </plugin>
                 <plugin>
                     <artifactId>maven-resources-plugin</artifactId>
                     <version>2.5</version>
                 </plugin>
-                <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build
-                    itself. -->
+                <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself. -->
                 <plugin>
                     <groupId>org.eclipse.m2e</groupId>
                     <artifactId>lifecycle-mapping</artifactId>
@@ -341,13 +325,13 @@
         </pluginManagement>
 
         <plugins>
-            <!-- Compiler plugin enforces Java 1.6 compatibility and activates annotation processors -->
+            <!-- Compiler plugin enforces Java 1.7 compatibility and activates annotation processors -->
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -409,18 +393,17 @@
                 <testContainer>jbossas+android</testContainer>
             </properties>
 
-            <dependencies>          
+            <dependencies>
                 <!-- Arquillian Droidium container adapter -->
                 <dependency>
                     <groupId>org.arquillian.container</groupId>
                     <artifactId>arquillian-droidium-container</artifactId>
                     <scope>test</scope>
-                </dependency>      
+                </dependency>
                 <!-- Arquillian Droidium for web testing -->
                 <dependency>
                     <groupId>org.arquillian.extension</groupId>
-                    <artifactId>arquillian-droidium-web-depchain</artifactId>
-                    <type>pom</type>
+                    <artifactId>arquillian-droidium-web</artifactId>
                     <scope>test</scope>
                 </dependency>
             </dependencies>

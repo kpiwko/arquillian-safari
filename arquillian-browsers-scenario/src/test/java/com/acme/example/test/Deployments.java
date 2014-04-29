@@ -24,7 +24,7 @@ public class Deployments {
     public static WebArchive createDeployment() {
         WebArchive archive = null;
         // if use ShrinkWrap importer
-        //archive = createDeploymentByImporter();
+        // archive = createDeploymentByImporter();
         // otherwise, construct deployment by hand
         archive = createDeploymentStepByStep();
 
@@ -33,26 +33,34 @@ public class Deployments {
 
     public static WebArchive createDeploymentByImporter() {
         return ShrinkWrap.create(MavenImporter.class, "arquillian-browsers-scenario.war").loadPomFromFile("pom.xml")
-                .importBuildOutput().as(WebArchive.class);
+            .importBuildOutput().as(WebArchive.class);
     }
 
     public static WebArchive createDeploymentStepByStep() {
         WebArchive war = ShrinkWrap
-                .create(WebArchive.class, "arquillian-browsers-scenario.war")
-                // add classes
-                .addPackages(true, Member.class.getPackage(), MemberService.class.getPackage(), Resources.class.getPackage(),
-                        MemberRepository.class.getPackage(), MemberRegistration.class.getPackage())
-                // add configuration - resources from src/main/resources
-                .addAsResource("META-INF/persistence.xml", "META-INF/persistence.xml").addAsWebInfResource("arquillian-ds.xml")
-                // add initial data
-                .addAsResource("import.sql");
+            .create(WebArchive.class, "arquillian-browsers-scenario.war")
+            // add classes
+            .addPackages(true, Member.class.getPackage(), MemberService.class.getPackage(), Resources.class.getPackage(),
+                MemberRepository.class.getPackage(), MemberRegistration.class.getPackage())
+            // add configuration - resources from src/main/resources
+            .addAsResource("META-INF/persistence.xml", "META-INF/persistence.xml")
+            .addAsWebInfResource("arquillian-ds.xml")
+            // add initial data
+            .addAsResource("import.sql");
 
         // add web pages and other resources
         war = ArchiveUtils.addWebResourcesRecursively(war, new File("src/main/webapp"));
 
         // add required libraries
-        File[] requiredLibraries = Maven.resolver().loadPomFromFile("pom.xml").resolve("org.apache.commons:commons-lang3")
-                .withTransitivity().as(File.class);
+        File[] requiredLibraries = Maven.configureResolver()
+            // add staging repository in case we are testing with latest stuff
+            .withRemoteRepo("jboss-staging-repository-group",
+                "https://repository.jboss.org/nexus/content/groups/staging",
+                "default")
+            .loadPomFromFile("pom.xml")
+            .resolve("org.apache.commons:commons-lang3")
+            .withTransitivity()
+            .as(File.class);
 
         return war.addAsLibraries(requiredLibraries);
     }
