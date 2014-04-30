@@ -19,14 +19,12 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <version.arquillian.core>1.1.4.Final</version.arquillian.core>
-        <version.org.jboss.arquillian.drone>1.2.4.Final</version.org.jboss.arquillian.drone>
-        <version.org.jboss.arquillian.graphene2>2.0.1.Final</version.org.jboss.arquillian.graphene2>
-        <version.droidium>1.0.0.Alpha5</version.droidium>
+        <version.org.jboss.arquillian.drone>2.0.0.Alpha2</version.org.jboss.arquillian.drone>
+        <version.org.jboss.arquillian.graphene2>2.0.2.Final</version.org.jboss.arquillian.graphene2>
+        <version.droidium>1.0.0.Alpha6</version.droidium>
         <version.junit>4.11</version.junit>
         <maven.compiler.source>1.6</maven.compiler.source>
         <maven.compiler.target>1.6</maven.compiler.target>
-        <android.emulator.options>-no-snapstorage -scale 0.8 -skin 768x1280</android.emulator.options>
-        <name.avd>android-4.4.2</name.avd>
     </properties>
 
     <!-- Dependency Management -->
@@ -93,11 +91,6 @@
         <dependency>
             <groupId>org.jboss.arquillian.junit</groupId>
             <artifactId>arquillian-junit-container</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.arquillian.protocol</groupId>
-            <artifactId>arquillian-protocol-servlet</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>

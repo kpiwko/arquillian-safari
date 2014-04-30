@@ -18,24 +18,25 @@ package org.arquillian.droidium.openblend;
 
 import java.io.File;
 
-import org.arquillian.droidium.container.api.AndroidDevice;
 import org.arquillian.droidium.native_.api.Instrumentable;
+import org.arquillian.droidium.native_.webdriver.AndroidDriver;
+import org.arquillian.droidium.openblend.drones.Mobile;
+import org.arquillian.droidium.openblend.drones.Tablet;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.OperateOnDeployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.container.test.api.TargetsContainer;
 import org.jboss.arquillian.drone.api.annotation.Drone;
-import org.jboss.arquillian.graphene.Graphene;
+import org.jboss.arquillian.graphene.page.Page;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
-import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
+
+import static org.hamcrest.CoreMatchers.is;
 
 /**
  *
@@ -47,7 +48,12 @@ import org.openqa.selenium.support.FindBy;
 public class AeroGearTestCase {
 
     @Drone
-    WebDriver mobile;
+    @Mobile
+    AndroidDriver mobile;
+
+    @Drone
+    @Tablet
+    AndroidDriver tablet;
 
     @Deployment(name = "mobile-app")
     @Instrumentable(viaPort = 8081)
@@ -56,30 +62,50 @@ public class AeroGearTestCase {
         return ShrinkWrap.createFromZipFile(JavaArchive.class, new File("android-devconf2014.apk"));
     }
 
-    @FindBy(id = "action_add")
-    WebElement addItemButton;
+    @Deployment(name = "tablet-app")
+    @Instrumentable(viaPort = 8082)
+    @TargetsContainer("tablet")
+    public static JavaArchive getTabletDeployment() {
+        return ShrinkWrap.createFromZipFile(JavaArchive.class, new File("android-devconf2014.apk"));
+    }
 
-    @FindBy(id = "text")
-    WebElement inputField;
+    @Page
+    @Mobile
+    TodoItemPage todolistMobile;
 
-    @FindBy(id = "add")
-    WebElement itemAdd;
+    @Page
+    @Tablet
+    TodoItemPage todolistTablet;
 
     @Test
     @InSequence(1)
     @OperateOnDeployment("mobile-app")
-    public void todolist(@ArquillianResource AndroidDevice device) {
-        device.getActivityManagerProvider()
-            .getActivityManager()
-            .startActivity("com.tadeaskriz.devconf2014.MainActivity_");
+    public void todolistMobileApp() {
 
-        addItemButton.click();
-
-        Graphene.waitGui(mobile).until().element(inputField).is().visible();
-
-        inputField.sendKeys("Automatize tests!");
-
-        itemAdd.click();
-
+        // Graphene does not yet support @InitialPage for non http/https locations
+        // https://issues.jboss.org/browse/ARQGRA-408
+        mobile.startActivity("com.tadeaskriz.devconf2014.MainActivity_");
+        todolistMobile.addItem("Automatize mobile tests!");
     }
+
+    @Test
+    @InSequence(2)
+    @OperateOnDeployment("tablet-app")
+    public void todolistTabletApp() {
+
+        // Graphene does not yet support @InitialPage for non http/https locations
+        // https://issues.jboss.org/browse/ARQGRA-408
+        tablet.startActivity("com.tadeaskriz.devconf2014.MainActivity_");
+        todolistTablet.addItem("Automatize tablet tests!");
+    }
+
+    @Test
+    @InSequence(3)
+    @OperateOnDeployment("mobile-app")
+    public void checkMobileTodoList() throws Exception {
+        Assert.assertThat("App running on mobile contains task added from tablet app",
+            todolistMobile.isUnresolvedTaskSynced("Automatize tablet tests!"),
+            is(true));
+    }
+
 }

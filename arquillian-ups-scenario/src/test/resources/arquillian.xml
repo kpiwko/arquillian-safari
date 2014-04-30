@@ -8,16 +8,28 @@
 
     <!-- Container configuration -->
     <group qualifier="containers" default="true">
-        <container qualifier="mobile">
+        <container qualifier="mobile" default="true">
             <configuration>
-                <property name="serialId">3233E8EDB21700EC</property>
+                <!-- <property name="serialId">3233E8EDB21700EC</property> -->
                 <!-- Name of Android container to start or use during tests. This property is filtered meaning it is set in profile in pom.xml under the same name of the property. -->
-                <property name="avdName">${name.avd}</property>
-                <property name="emulatorOptions">${android.emulator.options}</property>
-                <property name="emulatorBootupTimeoutInSeconds">600</property>
+                <property name="avdName">mobile-4.4.2</property>
+                <property name="emulatorOptions">-scale 0.8 -skin 768x1280</property>
                 <property name="logType">disable</property>
                 <property name="logLevel">D</property>
-                <property name="target">android-19</property>
+                <property name="target">Google Inc.:Google APIs x86:19</property>
+                <property name="emulatorBootupTimeoutInSeconds">600</property>
+            </configuration>
+        </container>
+        <container qualifier="tablet">
+            <configuration>
+                <!-- <property name="serialId">3233E8EDB21700EC</property> -->
+                <!-- Name of Android container to start or use during tests. This property is filtered meaning it is set in profile in pom.xml under the same name of the property. -->
+                <property name="avdName">tablet-4.4.2</property>
+                <property name="emulatorOptions">-scale 0.8 -skin 800x1280</property>
+                <property name="logType">disable</property>
+                <property name="logLevel">D</property>
+                <property name="target">Google Inc.:Google APIs x86:19</property>
+                <property name="emulatorBootupTimeoutInSeconds">600</property>
             </configuration>
         </container>
     </group>
@@ -27,13 +39,18 @@
         <property name="serverApk">selendroid-server-0.9.0.apk</property>
     </extension>
 
-    <extension qualifier="webdriver">
+    <extension qualifier="webdriver-mobile">
         <property name="browser">android</property>
         <property name="remoteAddress">http://localhost:8081/wd/hub</property>
     </extension>
 
+    <extension qualifier="webdriver-tablet">
+        <property name="browser">android</property>
+        <property name="remoteAddress">http://localhost:8082/wd/hub</property>
+    </extension>
+
     <extension qualifier="graphene">
-        <property name="waitGuiInterval">5</property>
+        <property name="waitGuiInterval">15</property>
     </extension>
 
 </arquillian>
