@@ -121,9 +121,9 @@ activate this test by selecting one of the container configuration provided
 for JBoss.
 
 To run the test in JBoss, first start the container instance. Then, run the
-test goal with the following profile activated:
+test goal with the following profile activated and choose the browser that you want to use:
 
-    mvn clean test -Parq-jbossas-remote
+    mvn clean test -Parq-jbossas-remote -Dbrowser=firefox
 
 Development notes
 =================
