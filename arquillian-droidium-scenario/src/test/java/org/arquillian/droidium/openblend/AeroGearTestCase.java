@@ -137,8 +137,7 @@ public class AeroGearTestCase {
     @OperateOnDeployment("todo-mobile-app")
     public void loginUserInMobile(@ArquillianResource AndroidDevice device) {
 
-        device.getActivityManagerProvider()
-            .getActivityManager()
+        device.getActivityManager()
             .startActivity("org.jboss.aerogear.todo.activities.LoginActivity");
 
         loginMobileFragment.login("john", "123");

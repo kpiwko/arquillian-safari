@@ -36,7 +36,7 @@
     <!-- Support for Arquillian Droidium Native extension
         for testing native Android applications -->
     <extension qualifier="droidium-native">
-        <property name="serverApk">selendroid-server-0.9.0.apk</property>
+        <property name="serverApk">selendroid-server-0.12.0.apk</property>
     </extension>
 
     <!-- This instance of WebDriver will control deployed EAR application -->
