@@ -1,0 +1,31 @@
+= Arquillian Drone, QUnit, Droidium scenario
+
+This test shows single test that runs in both desktop and mobile browsers. 
+
+== Run test
+
+First, make sure to update IP address in _pom.xml_ to externally facing IP address.
+Second, make sure that both mobile device and server machine are located in the same network.
+
+In case you want to run test on real device, you should uncomment +serialId+ in _arquillian.xml_.
+
+You can select test scenario according to selected profiles. You need to select:
+
+1. Container
+2. Browser
+
+Following profiles are available:
+
+* arq-jbossas-managed
+* arq-jbossas-remote
+
+* webdriver-firefox
+* webdriver-phantomjs
+* webdriver-android
+
+Execution:
+
+[source]
+----
+mvn clean verify -Pwebdriver-firefox,arq-jbossas-managed
+----
