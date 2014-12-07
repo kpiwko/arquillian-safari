@@ -1,15 +1,23 @@
-= Arquillian Safari
+= Arquillian Droidium Test
 
-Arquillian Safari is a show case for following test scenarios:
+This test shows interleaving in between application deployed on server back end an
 
-
-[horizontal]
+== Test cases
 
 * Functional tests for desktop and mobile browsers
 * Web Page abstractions
 * Easy switching between browsers
 
+== How to run
 
+[source]
+----
+mvn clean verify
+----
+
+== Limitations
+
+The test does not support testing on real device as URL in APK is hardcode to 10.0.0.2.
 
 == Requirements
 
