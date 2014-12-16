@@ -27,7 +27,10 @@
               exposedPorts: [81/tcp, 1521/tcp]
               await:
                 strategy: polling
-              portBindings: [1521/tcp, 8181->81/tcp]            
+              portBindings: [1521/tcp, 8181->81/tcp]
+            database_manual:
+              extends: database
+              portBindings: [1522->1521/tcp, 8182->81/tcp]            
         </property>
     </extension>
 
