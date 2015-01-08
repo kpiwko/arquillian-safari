@@ -16,41 +16,39 @@
  */
 package org.arquillian.droidium.openblend;
 
-import static org.arquillian.droidium.openblend.utils.Utils.openWebPageUrl;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 import java.io.File;
-import java.net.URL;
 
-import org.arquillian.droidium.container.api.AndroidDevice;
 import org.arquillian.droidium.native_.api.Instrumentable;
 import org.arquillian.droidium.openblend.drones.Browser;
 import org.arquillian.droidium.openblend.drones.Mobile;
-import org.arquillian.droidium.openblend.fragment.mobile.ActionBar;
-import org.arquillian.droidium.openblend.fragment.mobile.LoginMobileFragment;
-import org.arquillian.droidium.openblend.fragment.mobile.TaskMobileFragment;
-import org.arquillian.droidium.openblend.fragment.web.LoginWebFragment;
-import org.arquillian.droidium.openblend.fragment.web.ProjectFragment;
-import org.arquillian.droidium.openblend.fragment.web.TaskWebFragment;
+import org.arquillian.droidium.openblend.fragment.mobile.LoginLogoutPageMobile;
+import org.arquillian.droidium.openblend.fragment.mobile.TodoPageMobile;
+import org.arquillian.droidium.openblend.fragment.web.LoginLogoutPage;
+import org.arquillian.droidium.openblend.fragment.web.TodoPage;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.OperateOnDeployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.container.test.api.TargetsContainer;
 import org.jboss.arquillian.drone.api.annotation.Drone;
+import org.jboss.arquillian.graphene.page.InitialPage;
+import org.jboss.arquillian.graphene.page.Page;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
-import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.EnterpriseArchive;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 
 /**
+ * A simple tests that shows interaction in between Java EE backend application installed on
+ * application server and native Android application.
  *
+ * @author <a href="mailto:smikloso@redhat.com">Karel Piwko</a>
  * @author <a href="mailto:smikloso@redhat.com">Stefan Miklosovic</a>
  *
  */
@@ -58,123 +56,85 @@ import org.openqa.selenium.support.FindBy;
 @RunAsClient
 public class AeroGearTestCase {
 
+    // deployment of android application to a device
+    @Deployment(name = "todo-mobile-app")
+    @Instrumentable(viaPort = 8081)
+    @TargetsContainer("android")
+    public static JavaArchive androidApplication() {
+        return ShrinkWrap.createFromZipFile(JavaArchive.class, new File("android-todos.apk"));
+    }
+
+    // deployment of ear application to a server
+    @Deployment(name = "todo-ear-app")
+    @TargetsContainer("jbossas")
+    public static EnterpriseArchive serverBackendApplication() {
+        return ShrinkWrap.createFromZipFile(EnterpriseArchive.class, new File("todo-ear.ear"));
+    }
+
+    // handler for desktop browser automation
     @Drone
     @Browser
     WebDriver browser;
 
+    // handler for Android application automation
     @Drone
     @Mobile
     WebDriver mobile;
 
-    @Deployment(name = "todo-mobile-app")
-    @Instrumentable(viaPort = 8081)
-    @TargetsContainer("android")
-    public static JavaArchive getAndroidDeployment() {
-        return ShrinkWrap.createFromZipFile(JavaArchive.class, new File("android-todos.apk"));
-    }
-
-    @Deployment(name = "todo-ear-app")
-    @TargetsContainer("jbossas")
-    public static EnterpriseArchive getJBossASDeployment() {
-        return ShrinkWrap.createFromZipFile(EnterpriseArchive.class, new File("todo-ear.ear"));
-    }
-
+    // FIXME Graphene does not support injection of @Page in parameters
+    @Page
     @Browser
-    @FindBy(id = "login-box")
-    private LoginWebFragment loginFragment;
+    TodoPage todoPage;
 
-    @Browser
-    @FindBy(id = "project-list")
-    private ProjectFragment projectFragment;
-
-    @Browser
-    @FindBy(id = "task-container")
-    private TaskWebFragment taskFragment;
-
+    @Page
     @Mobile
-    @FindBy(id = "action_bar_container")
-    private ActionBar actionBar;
+    TodoPageMobile taskPageMobile;
 
+    @Page
     @Mobile
-    @FindBy(id = "content")
-    private LoginMobileFragment loginMobileFragment;
+    LoginLogoutPageMobile logoutPageMobile;
 
-    @Mobile
-    @FindBy(id = "todo")
-    private TaskMobileFragment taskMobileFragment;
-
+    @Page
     @Browser
-    @FindBy(id = "logout-btn")
-    private WebElement logoutButton;
-
+    LoginLogoutPage logoutPage;
 
     @Test
     @InSequence(1)
     @OperateOnDeployment("todo-ear-app")
-    public void loginUserInWebClient(@ArquillianResource URL context) {
-        openWebPageUrl(browser, context);
-        loginFragment.login("john", "123");
+    public void addProjectAndTaskViaWeb(@InitialPage @Browser LoginLogoutPage loginPage) {
+        loginPage.login("john", "123");
+
+        todoPage.addProject("groceries");
+        todoPage.addTask("buy some milk", "2020-10-20", "buy some fresh milk around the corner");
     }
 
     @Test
     @InSequence(2)
-    @OperateOnDeployment("todo-ear-app")
-    public void addProject() {
-
-        projectFragment.addProject("groceries");
-
-        Assert.assertEquals(projectFragment.getAddedProject().getText(), "groceries");
+    @OperateOnDeployment("todo-mobile-app")
+    public void addTaskViaMobileApp(@InitialPage @Mobile LoginLogoutPageMobile loginPage) {
+        loginPage.login("john", "123");
+        taskPageMobile.addTask("mobile task", "2014-10-20", "task from mobile phone!");
     }
 
     @Test
     @InSequence(3)
     @OperateOnDeployment("todo-ear-app")
-    public void addTask() {
-
-        taskFragment.addTask("groceries", "buy some milk", "2020", "10", "20", "buy some fresh milk around the corner");
-
-        Assert.assertEquals(taskFragment.getAddedTask().getTitle(), "buy some milk");
-        Assert.assertEquals(taskFragment.getAddedTask().getDescription(), "buy some fresh milk around the corner");
-
+    public void seeMobileTaskInWebClient() {
+        browser.navigate().refresh();
+        assertThat(todoPage.totalTasks(), is(2));
     }
 
     @Test
     @InSequence(4)
     @OperateOnDeployment("todo-mobile-app")
-    public void loginUserInMobile(@ArquillianResource AndroidDevice device) {
-
-        device.getActivityManager()
-            .startActivity("org.jboss.aerogear.todo.activities.LoginActivity");
-
-        loginMobileFragment.login("john", "123");
+    public void logoutFromMobileClient() {
+        logoutPageMobile.logout();
     }
-
 
     @Test
     @InSequence(5)
-    @OperateOnDeployment("todo-mobile-app")
-    public void addMobileTask() {
-        taskMobileFragment.addTask("mobile task", "2014-10-20", "task from mobile phone!");
-    }
-
-    @Test
-    @InSequence(6)
-    @OperateOnDeployment("todo-ear-app")
-    public void seeMobileTaskInWebClient() {
-        browser.navigate().refresh();
-    }
-
-    @Test
-    @InSequence(7)
-    @OperateOnDeployment("todo-mobile-app")
-    public void logoutFromMobileClient() {
-        actionBar.logout();
-    }
-
-    @Test
-    @InSequence(8)
     @OperateOnDeployment("todo-ear-app")
     public void logoutFromWebClient() {
-        logoutButton.click();
+        logoutPage.logout();
     }
 }

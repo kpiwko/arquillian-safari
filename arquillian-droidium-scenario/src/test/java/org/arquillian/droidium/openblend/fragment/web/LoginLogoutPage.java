@@ -17,7 +17,7 @@
 package org.arquillian.droidium.openblend.fragment.web;
 
 import org.jboss.arquillian.graphene.Graphene;
-import org.jboss.arquillian.graphene.fragment.Root;
+import org.jboss.arquillian.graphene.page.Location;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -27,9 +27,10 @@ import org.openqa.selenium.support.FindBy;
  * @author <a href="mailto:smikloso@redhat.com">Stefan Miklosovic</a>
  *
  */
-public class LoginWebFragment {
+@Location("/todo")
+public class LoginLogoutPage {
 
-    @Root
+    @FindBy(id = "login-box")
     private WebElement root;
 
     @FindBy(id = "login-username")
@@ -41,11 +42,18 @@ public class LoginWebFragment {
     @FindBy(id = "login-submit")
     private WebElement loginButton;
 
+    @FindBy(id = "logout-btn")
+    private WebElement logoutButton;
+
     public void login(String username, String password) {
         usernameField.sendKeys(username);
         passwordField.sendKeys(password);
         loginButton.click();
 
         Graphene.waitGui().until().element(root).is().not().visible();
+    }
+
+    public void logout() {
+        logoutButton.click();
     }
 }
