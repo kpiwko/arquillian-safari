@@ -9,14 +9,14 @@ Arquillian Safari is a show case for following test scenarios:
 * Web Page abstractions
 * Easy switching between browsers
 
-
-
 == Requirements
 
 * Java
 * Maven (version 3.0 and above)
-* Android SDK and ANDRODI_HOME environment variable that point to it
+* Android SDK and ANDROID_HOME environment variable that points to Android SDK installation directory
 * Android 4.2.2 libraries installed in Android SDK
 
+== Notes
 
-
+This test does not work on real devices as mobile application has hardcoded connection to +10.0.0.2+ IP address
+that acts as identified of host machine and which is not available on real devices.
