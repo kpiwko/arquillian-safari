@@ -16,7 +16,7 @@
  */
 package org.arquillian.droidium.openblend;
 
-import static org.arquillian.droidium.openblend.utils.Utils.*;
+import static org.arquillian.droidium.openblend.utils.Utils.openWebPageUrl;
 
 import java.io.File;
 import java.net.URL;
@@ -25,6 +25,7 @@ import org.arquillian.droidium.container.api.AndroidDevice;
 import org.arquillian.droidium.native_.api.Instrumentable;
 import org.arquillian.droidium.openblend.drones.Browser;
 import org.arquillian.droidium.openblend.drones.Mobile;
+import org.arquillian.droidium.openblend.fragment.mobile.ActionBar;
 import org.arquillian.droidium.openblend.fragment.mobile.LoginMobileFragment;
 import org.arquillian.droidium.openblend.fragment.mobile.TaskMobileFragment;
 import org.arquillian.droidium.openblend.fragment.web.LoginWebFragment;
@@ -91,6 +92,10 @@ public class AeroGearTestCase {
     private TaskWebFragment taskFragment;
 
     @Mobile
+    @FindBy(id = "action_bar_container")
+    private ActionBar actionBar;
+
+    @Mobile
     @FindBy(id = "content")
     private LoginMobileFragment loginMobileFragment;
 
@@ -101,6 +106,7 @@ public class AeroGearTestCase {
     @Browser
     @FindBy(id = "logout-btn")
     private WebElement logoutButton;
+
 
     @Test
     @InSequence(1)
@@ -143,6 +149,7 @@ public class AeroGearTestCase {
         loginMobileFragment.login("john", "123");
     }
 
+
     @Test
     @InSequence(5)
     @OperateOnDeployment("todo-mobile-app")
@@ -161,7 +168,7 @@ public class AeroGearTestCase {
     @InSequence(7)
     @OperateOnDeployment("todo-mobile-app")
     public void logoutFromMobileClient() {
-        taskMobileFragment.logout();
+        actionBar.logout();
     }
 
     @Test

@@ -16,11 +16,8 @@
  */
 package org.arquillian.droidium.openblend.fragment.web;
 
-import org.arquillian.droidium.openblend.drones.Browser;
-import org.jboss.arquillian.drone.api.annotation.Drone;
 import org.jboss.arquillian.graphene.Graphene;
 import org.jboss.arquillian.graphene.fragment.Root;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -35,10 +32,6 @@ public class LoginWebFragment {
     @Root
     private WebElement root;
 
-    @Drone
-    @Browser
-    private WebDriver browser;
-
     @FindBy(id = "login-username")
     private WebElement usernameField;
 
@@ -52,6 +45,7 @@ public class LoginWebFragment {
         usernameField.sendKeys(username);
         passwordField.sendKeys(password);
         loginButton.click();
-        Graphene.waitGui(browser).until().element(root).is().not().visible();
+
+        Graphene.waitGui().until().element(root).is().not().visible();
     }
 }

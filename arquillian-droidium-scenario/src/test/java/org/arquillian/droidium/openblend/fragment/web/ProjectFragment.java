@@ -35,10 +35,6 @@ public class ProjectFragment {
     @Root
     private WebElement root;
 
-    @Browser
-    @Drone
-    private WebDriver browser;
-
     @FindBy(className = "add-project")
     private WebElement addProject;
 
@@ -56,14 +52,14 @@ public class ProjectFragment {
 
     public void click() {
         addProject.click();
-        Graphene.waitGui(browser).until().element(addProject).attribute("style").contains("display: none;");
+        Graphene.waitGui().until().element(addProject).attribute("style").contains("display: none;");
     }
 
     public void addProject(String projectTitle) {
         click();
         this.projectTitle.sendKeys(projectTitle);
         addProjectButton.click();
-        Graphene.waitGui(browser).until().element(addedProject).is().present();
+        Graphene.waitGui().until().element(addedProject).is().present();
     }
 
     public WebElement getAddedProject() {

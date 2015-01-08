@@ -39,10 +39,6 @@ public class TaskWebFragment {
     @Root
     private WebElement root;
 
-    @Drone
-    @Browser
-    private WebDriver browser;
-
     @FindBy(css = ".add-task.task")
     private WebElement addTask;
 
@@ -69,7 +65,7 @@ public class TaskWebFragment {
 
     public void click() {
         addTask.click();
-        Graphene.waitGui(browser).until().element(addTask).attribute("style").contains("display: none;");
+        Graphene.waitGui().until().element(addTask).attribute("style").contains("display: none;");
     }
 
     public void addToProject(String toProject) {
@@ -96,7 +92,7 @@ public class TaskWebFragment {
         taskDescription.sendKeys(description);
 
         submitButton.click();
-        Graphene.waitGui(browser).until().element(addedTask).is().present();
+        Graphene.waitGui().until().element(addedTask).is().present();
     }
 
 }
