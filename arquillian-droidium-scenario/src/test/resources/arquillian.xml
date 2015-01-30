@@ -35,7 +35,7 @@
 
     <extension qualifier="droidium-platform">
         <property name="androidHome">/home/kpiwko/apps/android-sdk-linux_x86</property>
-    </extension-->
+    </extension>
 
     <!-- This instance of WebDriver will control deployed EAR application -->
     <extension qualifier="webdriver-browser">
