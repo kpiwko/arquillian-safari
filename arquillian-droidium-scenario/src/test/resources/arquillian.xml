@@ -33,16 +33,9 @@
         </container>
     </group>
 
-    <!-- Support for Arquillian Droidium Native extension
-        for testing native Android applications -->
-    <extension qualifier="droidium-native">
-        <property name="serverApk">selendroid-server-0.13.0-SNAPSHOT.apk</property>
-        <property name="driverApk">android-driver-app-0.13.0-SNAPSHOT.apk</property>        
-    </extension>
-    
     <extension qualifier="droidium-platform">
         <property name="androidHome">/home/kpiwko/apps/android-sdk-linux_x86</property>
-    </extension>
+    </extension-->
 
     <!-- This instance of WebDriver will control deployed EAR application -->
     <extension qualifier="webdriver-browser">

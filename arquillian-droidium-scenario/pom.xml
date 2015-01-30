@@ -25,13 +25,13 @@
     <!-- Properties -->
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <version.arquillian.core>1.1.5.Final</version.arquillian.core>
+        <version.arquillian.core>1.1.6.Final</version.arquillian.core>
         <version.selenium>2.43.1</version.selenium>
-        <version.org.jboss.arquillian.drone>2.0.0.Alpha2</version.org.jboss.arquillian.drone>
-        <version.org.jboss.arquillian.graphene2>2.1.0.Alpha1</version.org.jboss.arquillian.graphene2>
-        <version.droidium>1.0.0.Beta1-SNAPSHOT</version.droidium>
+        <version.org.jboss.arquillian.drone>2.0.0.Alpha3</version.org.jboss.arquillian.drone>
+        <version.org.jboss.arquillian.graphene2>2.1.0.Alpha2</version.org.jboss.arquillian.graphene2>
+        <version.droidium>1.0.0.Alpha6</version.droidium>
         <version.org.jboss.as>7.1.1.Final</version.org.jboss.as>
-        <version.junit>4.11</version.junit>
+        <version.junit>4.12</version.junit>
         <maven.compiler.source>1.6</maven.compiler.source>
         <maven.compiler.target>1.6</maven.compiler.target>
         <android.emulator.options>-no-snapstorage -scale 0.8 -skin 768x1280</android.emulator.options>
@@ -123,14 +123,15 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.jboss.arquillian.protocol</groupId>
-            <artifactId>arquillian-protocol-servlet</artifactId>
+            <groupId>org.arquillian.protocol</groupId>
+            <artifactId>arquillian-protocol-android</artifactId>
+            <version>${version.droidium}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.arquillian.protocol</groupId>
-            <artifactId>arquillian-protocol-android</artifactId>
-            <version>1.0.0.Alpha5</version>
+            <groupId>org.jboss.arquillian.protocol</groupId>
+            <artifactId>arquillian-protocol-servlet</artifactId>
+            <scope>test</scope>
         </dependency>
         
         <dependency>
