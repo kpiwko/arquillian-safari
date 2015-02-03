@@ -1,6 +1,7 @@
 import org.arquillian.spacelift.gradle.android.*
 import org.arquillian.spacelift.gradle.arquillian.*
 import org.arquillian.spacelift.gradle.maven.*
+import org.arquillian.spacelift.gradle.utils.*
 import org.arquillian.spacelift.Spacelift
 import org.arquillian.spacelift.task.os.CommandTool
 import org.arquillian.spacelift.process.CommandBuilder
@@ -11,6 +12,8 @@ apply plugin: 'spacelift'
 
 // additional parameters you can pass from command line via -P{{name}}={{value}}
 ext {
+    androidTargets = [[name: 'Google Inc.:Google APIs (x86 System Image):19', abi: 'default/x86'],
+                      [name: 'Google Inc.:Google APIs:21', abi: 'google_apis/x86']]
 }
 
 spacelift {
@@ -47,7 +50,7 @@ spacelift {
                     mvnPath += '.bat'
                 }
 
-                return Tasks.prepare(CommandTool).command(new CommandBuilder(mvnPath))
+                return new CommandBuilder(mvnPath)
             }
         }
     }
@@ -59,6 +62,10 @@ spacelift {
             enabledInstallations '*'
             tests '*'
         }
+        androidTests {
+            enabledInstallations 'androidSdk'
+            tests 'droidiumScenario'
+        }
     }
     // these installation will be installed prior tests are executed
     installations {
@@ -66,7 +73,7 @@ spacelift {
       androidSdk(from:AndroidSdkInstallation) {
           product 'android'
           version '24.0.2'
-          androidTargets ([name:'Google Inc.:Google APIs (x86 System Image):19', abi: "default/x86"])
+          androidTargets project.androidTargets
           createAvds false
           postActions {
             // update arquillian.xml files with Android homes in all installations and integration test directory
@@ -81,13 +88,20 @@ spacelift {
 
     // test definitions
     tests {
-        mytest {
-            beforeTest {
+        droidiumScenario {
+            // this will be executed for each android target defined in ext {}
+            dataProvider {
+                project.androidTargets
             }
-            execute {
-
-            }
-            afterSuite {
+            execute { target ->
+              // execute example tests where Droidium is used
+              Spacelift.task(MavenExecutor)
+                  .pom("${project.rootDir}/arquillian-droidium-scenario/pom.xml")
+                  .goals('clean','test')
+                  .androidTarget(target.name)
+                  .surefireSuffix("android-${target.name[-2..-1]}")
+                  .property("arq.group.containers.container.android.configuration.avdName=${target.name.replaceAll('[\\W]|_', '')}")
+                  .execute().await()
             }
         }
     }
