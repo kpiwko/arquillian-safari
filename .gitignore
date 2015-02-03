@@ -7,4 +7,5 @@ ws
 .project
 .settings/*
 *.xml.backup*
+.gradle
 !*/.settings/.jsdtscope

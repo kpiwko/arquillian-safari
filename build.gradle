@@ -5,6 +5,10 @@ import org.arquillian.spacelift.gradle.utils.*
 import org.arquillian.spacelift.Spacelift
 import org.arquillian.spacelift.task.os.CommandTool
 import org.arquillian.spacelift.process.CommandBuilder
+
+// own tasks
+import org.arquillian.safari.net.*
+
 import java.io.File
 
 defaultTasks 'test'
@@ -14,6 +18,7 @@ apply plugin: 'spacelift'
 ext {
     androidTargets = [[name: 'Google Inc.:Google APIs (x86 System Image):19', abi: 'default/x86'],
                       [name: 'Google Inc.:Google APIs:21', abi: 'google_apis/x86']]
+    defaultBrowsers = ['firefox', 'chrome']
 }
 
 spacelift {
@@ -66,6 +71,10 @@ spacelift {
             enabledInstallations 'androidSdk'
             tests 'droidiumScenario'
         }
+        browserTests {
+            enabledInstallations 'androidSdk'
+            tests 'browsersScenario'
+        }
     }
     // these installation will be installed prior tests are executed
     installations {
@@ -94,14 +103,35 @@ spacelift {
                 project.androidTargets
             }
             execute { target ->
-              // execute example tests where Droidium is used
-              Spacelift.task(MavenExecutor)
-                  .pom("${project.rootDir}/arquillian-droidium-scenario/pom.xml")
-                  .goals('clean','test')
-                  .androidTarget(target.name)
-                  .surefireSuffix("android-${target.name[-2..-1]}")
-                  .property("arq.group.containers.container.android.configuration.avdName=${target.name.replaceAll('[\\W]|_', '')}")
-                  .execute().await()
+                // execute example tests where Droidium is used
+                Spacelift.task(MavenExecutor)
+                    .pom("${project.rootDir}/arquillian-droidium-scenario/pom.xml")
+                    .goals('clean','test')
+                    .androidTarget(target.name)
+                    .surefireSuffix("android-${target.name[-2..-1]}")
+                    .property("arq.group.containers.container.android.configuration.avdName=${target.name.replaceAll('[\\W]|_', '')}")
+                    .execute().await()
+            }
+        }
+        browsersScenario {
+
+            // try to figure out what is the real IP of this machine
+            // also shows that you can define tasks locally in buildSrc
+            def ip = Spacelift.task(GuessRealIPTask).execute().await()
+            println "Trying to run test with ${ip}"
+
+            dataProvider {
+                // if not provided from command line (-Pbrowsers), this is has defaultBrowsers value
+                project.browsers
+            }
+            execute { browser ->
+                Spacelift.task(MavenExecutor)
+                    .pom("${project.rootDir}/arquillian-browsers-scenario/pom.xml")
+                    .goals('clean', 'test')
+                    .property("jboss.bind.address=${ip}")
+                    .surefireSuffix(browser)
+                    .profiles('arq-jbossas-managed', "webdriver-${browser}")
+                    .execute().await()
             }
         }
     }

@@ -1,0 +1,22 @@
+apply plugin: 'groovy'
+
+repositories {
+    mavenCentral()
+    //mavenLocal()
+    // adding staging repository, might be handy to use staged versions version
+    maven {
+        name 'jboss-staging-repository-group'
+        url 'https://repository.jboss.org/nexus/content/groups/staging'
+    }
+}
+
+dependencies {
+    compile gradleApi()
+    compile localGroovy()
+
+    // commons lang is used to do platform checks
+    compile 'org.apache.commons:commons-lang3:3.1'
+
+    // Spacelift abstracts execution of external commands
+    compile 'org.arquillian.spacelift.gradle:arquillian-spacelift-gradle:1.0.0-alpha-7'
+}
