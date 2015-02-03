@@ -1,0 +1,19 @@
+= Arquillian Safari
+
+Arquillian Safari contains various showcases for Arquillian Extensions combined in action.
+
+This project also demonstrated Arquillian Spacelift.
+
+== Prerequisites
+
+* Java 7 or higher, +javac+ must be available on $PATH or %PATH%
+* Maven 3.1.1 or higher, +mvn+ must be available on $PATH or %PATH%
+
+== Test execution
+
+Execute Gradle wrapper and Spacelift will do the rest
+
+[source]
+----
+./gradlew test
+----

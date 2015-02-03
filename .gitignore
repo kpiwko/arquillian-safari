@@ -1,8 +1,10 @@
 target
+ws
 */.classpath
 */.settings/*
 */.project
 .git*
 .project
 .settings/*
+*.xml.backup*
 !*/.settings/.jsdtscope

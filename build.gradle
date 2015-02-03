@@ -1,0 +1,113 @@
+import org.arquillian.spacelift.gradle.android.*
+import org.arquillian.spacelift.gradle.arquillian.*
+import org.arquillian.spacelift.gradle.maven.*
+import org.arquillian.spacelift.Spacelift
+import org.arquillian.spacelift.task.os.CommandTool
+import org.arquillian.spacelift.process.CommandBuilder
+import java.io.File
+
+defaultTasks 'test'
+apply plugin: 'spacelift'
+
+// additional parameters you can pass from command line via -P{{name}}={{value}}
+ext {
+}
+
+spacelift {
+    // this is where Spacelift will perform tests
+    workspace = new File(project.rootDir, 'ws')
+    // this is where Spacelift will cache installations
+    installationsDir = new File(project.rootDir, 'ws/installations')
+    tools {
+        // create Spacelift task for calling Java
+        java {
+            command ([
+                linux: "java",
+                windows: "java.exe",
+                mac: "java",
+                solaris: "java"
+            ])
+        }
+        // create Spacelift task for calling Maven
+        mvn {
+            command {
+                def m2 = System.getenv("M2")
+                def m2_home = System.getenv("M2_HOME")
+
+                def mvnPath = null
+                if (m2 != null && !m2.isEmpty() && (new File(m2, 'mvn')).exists()) {
+                    mvnPath = new File(new File(m2), 'mvn').getCanonicalPath()
+                } else if (m2_home != null && !m2_home.isEmpty() && (new File(m2_home, 'mvn')).exists()) {
+                    mvnPath = new File(new File(m2_home), 'mvn').getCanonicalPath()
+                } else {
+                    mvnPath = "mvn"
+                }
+
+                if(EnvironmentUtils.runsOnWindows()) {
+                    mvnPath += '.bat'
+                }
+
+                return Tasks.prepare(CommandTool).command(new CommandBuilder(mvnPath))
+            }
+        }
+    }
+    // various execution profiles
+    // you can specify a profile by -P{{profileName}}
+    profiles {
+        // this profile is triggered by default
+        "default" {
+            enabledInstallations '*'
+            tests '*'
+        }
+    }
+    // these installation will be installed prior tests are executed
+    installations {
+      // install Android SDK
+      androidSdk(from:AndroidSdkInstallation) {
+          product 'android'
+          version '24.0.2'
+          androidTargets ([name:'Google Inc.:Google APIs (x86 System Image):19', abi: "default/x86"])
+          createAvds false
+          postActions {
+            // update arquillian.xml files with Android homes in all installations and integration test directory
+            Spacelift.task([
+                androidHome: "${home}",
+                androidSdkHome: "${project.spacelift.workspace}"
+                ], ArquillianXmlUpdater)
+            .dir(project.rootDir).extension('droidium-platform').execute().await()
+          }
+      }
+    }
+
+    // test definitions
+    tests {
+        mytest {
+            beforeTest {
+            }
+            execute {
+
+            }
+            afterSuite {
+            }
+        }
+    }
+}
+
+// build dependencies
+buildscript {
+    repositories {
+        mavenCentral()
+        // you need this only if you plan to use SNAPSHOT version of this plugin
+        maven {
+            name 'jboss-staging-repository-group'
+            url 'https://repository.jboss.org/nexus/content/groups/staging'
+        }
+    }
+    dependencies {
+        classpath 'org.arquillian.spacelift.gradle:arquillian-spacelift-gradle:1.0.0-alpha-7'
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.2'
+}
