@@ -1,0 +1,16 @@
+= Arquillian Docker Scenario
+
+This project shows how to use Docker to bring you preconfigured system under test.
+
+Docker is used to provide:
+* WildFly 8 container
+* H2 database
+
+Test deploys a simple WAR with a servlet to the WildFly 8 instance. Arquillian Cube controls
+both WildFly and H2 Docker images, loading WAR into Arquillian WildFly container that is running
+inside of docker
+
+[NOTE]
+====
+You need to enable TCP/IP socket in Docker. See more details at https://github.com/arquillian/arquillian-cube
+====
