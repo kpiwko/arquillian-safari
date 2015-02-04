@@ -1,0 +1,19 @@
+= Arquillian Browsers Scenario
+
+This project shows a browser web UI tests written in a way they can be easily executed from command line, IDE and debugged. Additionally, this
+examplem demonstrates how to run QUnit defined tests directly in the deployed application from Java related code.
+
+Additionally, this example demonstrates _Page_ and _Fragment_ abstractions from Arquillian Graphene to encapsulate low lever
+logic and keep it apart from the test itself.
+
+The example is using following architecture:
+* WAR application running on application server using Java EE 6 with responsive design
+* Services exposes as REST endpoint
+* JPA based datasource for data storage
+* Graphene defined test for the application
+* QUnit tests covering REST endpoint testing
+
+[NOTE]
+----
+This test is configured to run on Firefox, Chrome and PhantomJS, however all browsers supported by Drone will do.
+----

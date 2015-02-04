@@ -1,22 +1,19 @@
-= Arquillian Safari
+= Arquillian Droidium Scenario
 
-Arquillian Safari is a show case for following test scenarios:
+This project shows a seamless navigation in test using Android Application and web based UI as front-ends and backend running
+on application servers. Test is able to perform various actions on either of the frontends and validate that the action had expected effect
+on different frontend.
 
+Additionally, this example demonstrates _Page_ and _Fragment_ abstractions from Arquillian Graphene to encapsulate low lever
+logic and keep it apart from the test itself.
 
-[horizontal]
+The example is using following architecture:
+* EAR application running on application server
+* REST services exposed for both Web UI and native Android Application
+* JPA based datasource for data storage
 
-* Functional tests for desktop and mobile browsers
-* Web Page abstractions
-* Easy switching between browsers
-
-== Requirements
-
-* Java
-* Maven (version 3.0 and above)
-* Android SDK and ANDROID_HOME environment variable that points to Android SDK installation directory
-* Android 4.2.2 libraries installed in Android SDK
-
-== Notes
-
+[NOTE]
+----
 This test does not work on real devices as mobile application has hardcoded connection to +10.0.0.2+ IP address
-that acts as identified of host machine and which is not available on real devices.
+that acts as a identifier of host machine and which is not available on real devices.
+----
