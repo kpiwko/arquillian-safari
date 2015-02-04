@@ -7,6 +7,7 @@ Additionally, this example demonstrates _Page_ and _Fragment_ abstractions from 
 logic and keep it apart from the test itself.
 
 The example is using following architecture:
+
 * WAR application running on application server using Java EE 6 with responsive design
 * Services exposes as REST endpoint
 * JPA based datasource for data storage
@@ -14,6 +15,6 @@ The example is using following architecture:
 * QUnit tests covering REST endpoint testing
 
 [NOTE]
-----
+====
 This test is configured to run on Firefox, Chrome and PhantomJS, however all browsers supported by Drone will do.
-----
+====

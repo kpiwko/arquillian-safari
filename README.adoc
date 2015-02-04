@@ -14,7 +14,6 @@ to execute the scenarios and run the tests.
 | link:arquillian-docker-scenario/README.adoc[arquillian-docker-scenario] | Arquillian Cube
 |============================================================================================================================================
 
-
 == Prerequisites
 
 You should have following installed on your machine to execute Spacelift based tests
