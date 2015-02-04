@@ -12,7 +12,7 @@ to execute the scenarios and run the tests.
 | link:arquillian-browsers-scenario/README.adoc[arquillian-browsers-scenario] | Arquillian Drone, Arquillian Graphene, Arquillian QUnit
 | link:arquillian-rest-scenario/README.adoc[arquillian-rest-scenario] | Arquillian Spock, Arquillian Byteman
 | link:arquillian-docker-scenario/README.adoc[arquillian-docker-scenario] | Arquillian Cube
-|============================================================================================================================================
+|===========================================================================================================================================
 
 == Prerequisites
 
