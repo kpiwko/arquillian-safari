@@ -114,7 +114,6 @@ spacelift {
             }
         }
         browsersScenario {
-
             // try to figure out what is the real IP of this machine
             // also shows that you can define tasks locally in buildSrc
             def ip = Spacelift.task(GuessRealIPTask).execute().await()
