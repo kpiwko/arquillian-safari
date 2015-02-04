@@ -2,16 +2,16 @@
 
 Arquillian Safari contains various showcases for Arquillian Extensions combined in action.
 
-This project also demonstrated Arquillian Spacelift.
+This project also demonstrates Arquillian Spacelift, that is used to bring dependencies needed
+to execute the scenarios and run the tests.
 
-.Test cases
 [options="header"]
 |===========================================================================================================================================
-|Name | Demonstrates | Additional documentation
-| arquillian-droidium-scenario | Arquillian Drone, Arquillian Graphene, Arquillian Droidium | link:arquillian-droidium-scenario/README.adoc
-| arquillian-browsers-scenario | Arquillian Drone, Arquillian Graphene, Arquillian QUnit | link:arquillian-browsers-scenario/README.adoc
-| arquillian-rest-scenario | Arquillian Spock, Arquillian Byteman | link:arquillian-rest-scenario/README.adoc
-| arquillian-docker-scenario | Arquillian Cube | link:arquillian-docker-scenario/README.adoc
+|Name | Demonstrates
+| link:arquillian-droidium-scenario/README.adoc[arquillian-droidium-scenario] | Arquillian Drone, Arquillian Graphene, Arquillian Droidium
+| link:arquillian-browsers-scenario/README.adoc[arquillian-browsers-scenario] | Arquillian Drone, Arquillian Graphene, Arquillian QUnit
+| link:arquillian-rest-scenario/README.adoc[arquillian-rest-scenario] | Arquillian Spock, Arquillian Byteman
+| link:arquillian-docker-scenario/README.adoc[arquillian-docker-scenario] | Arquillian Cube
 |============================================================================================================================================
 
 
