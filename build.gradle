@@ -72,8 +72,10 @@ spacelift {
             tests 'droidiumScenario'
         }
         browserTests {
-            enabledInstallations 'androidSdk'
             tests 'browsersScenario'
+        }
+        restTests {
+            tests 'restScenario'
         }
     }
     // these installation will be installed prior tests are executed
@@ -130,6 +132,15 @@ spacelift {
                     .property("jboss.bind.address=${ip}")
                     .surefireSuffix(browser)
                     .profiles('arq-jbossas-managed', "webdriver-${browser}")
+                    .execute().await()
+            }
+        }
+        restScenario {
+            execute { browser ->
+                Spacelift.task(MavenExecutor)
+                    .pom("${project.rootDir}/arquillian-rest-scenario/pom.xml")
+                    .goals('clean', 'test')
+                    .profiles('arq-jbossas-managed')
                     .execute().await()
             }
         }
