@@ -77,6 +77,10 @@ spacelift {
         restTests {
             tests 'restScenario'
         }
+        dockerTests {
+            tests 'dockerScenario'
+        }
+
     }
     // these installation will be installed prior tests are executed
     installations {
@@ -141,6 +145,14 @@ spacelift {
                     .pom("${project.rootDir}/arquillian-rest-scenario/pom.xml")
                     .goals('clean', 'test')
                     .profiles('arq-jbossas-managed')
+                    .execute().await()
+            }
+        }
+        dockerScenario {
+            execute { browser ->
+                Spacelift.task(MavenExecutor)
+                    .pom("${project.rootDir}/arquillian-docker-scenario/pom.xml")
+                    .goals('clean', 'test')
                     .execute().await()
             }
         }
