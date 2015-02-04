@@ -16,21 +16,20 @@
         <version.org.jboss.spec.ee6-web>3.0.2.Final</version.org.jboss.spec.ee6-web>
         <version.org.jboss.bom>1.0.7.Final</version.org.jboss.bom>
         <version.org.apache.commons.lang3>3.1</version.org.apache.commons.lang3>
-        <version.org.jboss.arquillian>1.1.4.Final</version.org.jboss.arquillian>
+        <version.org.jboss.arquillian>1.1.5.Final</version.org.jboss.arquillian>
 
         <!-- Don't touch versions of Drone, Graphene and Droidium until we have Droidium with web plugin based on Drone 2.x and fixed Graphene -->
-        <version.org.jboss.arquillian.drone>1.2.4.Final</version.org.jboss.arquillian.drone>
-        <version.org.jboss.arquillian.graphene>2.0.1.Final</version.org.jboss.arquillian.graphene>        
-        <version.org.arquillian.droidium>1.0.0.Alpha5</version.org.arquillian.droidium>
-        <version.org.jboss.arquillian.qunit>1.0.0.Alpha2</version.org.jboss.arquillian.qunit>
+        <version.org.jboss.arquillian.drone>2.0.0.Alpha3</version.org.jboss.arquillian.drone>
+        <version.org.jboss.arquillian.graphene>2.1.0.Alpha2</version.org.jboss.arquillian.graphene>
+        <version.org.jboss.arquillian.qunit>1.0.0.Alpha4</version.org.jboss.arquillian.qunit>
 
         <version.org.jboss.as>7.1.1.Final</version.org.jboss.as>
-        <version.junit>4.11</version.junit>
-        <version.selenium>2.39.0</version.selenium>
+        <version.junit>4.12</version.junit>
+        <version.selenium>2.43.1</version.selenium>
 
         <!-- default test properties -->
         <testContainer>jbossas</testContainer>
-        <jboss.bind.address>10.34.131.121</jboss.bind.address>
+        <jboss.bind.address>127.0.0.1</jboss.bind.address>
     </properties>
 
     <licenses>
@@ -99,19 +98,6 @@
                 <groupId>org.jboss.arquillian.extension</groupId>
                 <artifactId>arquillian-qunit</artifactId>
                 <version>${version.org.jboss.arquillian.qunit}</version>
-            </dependency>
-
-            <!-- Arquillian Droidium container adapter -->
-            <dependency>
-                <groupId>org.arquillian.container</groupId>
-                <artifactId>arquillian-droidium-container</artifactId>
-                <version>${version.org.arquillian.droidium}</version>
-            </dependency>
-            <!-- Arquillian Droidium for web testing -->
-            <dependency>
-                <groupId>org.arquillian.extension</groupId>
-                <artifactId>arquillian-droidium-web</artifactId>
-                <version>${version.org.arquillian.droidium}</version>
             </dependency>
 
             <!-- Test containers -->
@@ -382,31 +368,6 @@
             <properties>
                 <browser>chrome</browser>
             </properties>
-        </profile>
-
-        <!-- This is alternative browser profile, it runs Android -->
-        <profile>
-            <id>webdriver-android</id>
-
-            <properties>
-                <browser>android</browser>
-                <testContainer>jbossas+android</testContainer>
-            </properties>
-
-            <dependencies>
-                <!-- Arquillian Droidium container adapter -->
-                <dependency>
-                    <groupId>org.arquillian.container</groupId>
-                    <artifactId>arquillian-droidium-container</artifactId>
-                    <scope>test</scope>
-                </dependency>
-                <!-- Arquillian Droidium for web testing -->
-                <dependency>
-                    <groupId>org.arquillian.extension</groupId>
-                    <artifactId>arquillian-droidium-web</artifactId>
-                    <scope>test</scope>
-                </dependency>
-            </dependencies>
         </profile>
 
         <!-- CONTAINER PROFILES -->

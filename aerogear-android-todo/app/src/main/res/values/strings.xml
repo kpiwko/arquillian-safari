@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--~
+  ~ JBoss, Home of Professional Open Source
+  ~ Copyright Red Hat, Inc., and individual contributors
+  ~ by the @authors tag. See the copyright.txt in the distribution for a
+  ~ full listing of individual contributors.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<resources>
+
+    <string name="app_name">TODOs</string>
+    <string name="projects">Projects</string>
+    <string name="tags">Tags</string>
+    <string name="tasks">Tasks</string>
+    <string name="title">Title:</string>
+    <string name="color">Color:</string>
+    <string name="date">Date:</string>
+    <string name="description">Description:</string>
+    <string name="add">Add</string>
+    <string name="password">Password</string>
+    <string name="update">Update</string>
+    <string name="cancel">Cancel</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_login">Login</string>
+    <string name="register"><u>Register</u></string>
+    <string name="username">Username</string>
+    <string name="login">Login</string>
+    <string name="logout">Logout</string>
+    <string name="title_activity_register">Register</string>
+    <string name="role">Role</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="email_address">Email Address</string>
+
+    <string-array name="roles_array">
+        <item>simple</item>
+        <item>admin</item>
+    </string-array>
+    <string name="submit">Submit</string>
+
+</resources>

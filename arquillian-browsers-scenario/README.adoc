@@ -1,31 +1,20 @@
-= Arquillian Drone, QUnit, Droidium scenario
+= Arquillian Browsers Scenario
 
-This test shows single test that runs in both desktop and mobile browsers. 
+This project shows a browser web UI tests written in a way they can be easily executed from command line, IDE and debugged. Additionally, this
+examplem demonstrates how to run QUnit defined tests directly in the deployed application from Java related code.
 
-== Run test
+Additionally, this example demonstrates _Page_ and _Fragment_ abstractions from Arquillian Graphene to encapsulate low lever
+logic and keep it apart from the test itself.
 
-First, make sure to update IP address in _pom.xml_ to externally facing IP address.
-Second, make sure that both mobile device and server machine are located in the same network.
+The example is using following architecture:
 
-In case you want to run test on real device, you should uncomment +serialId+ in _arquillian.xml_.
+* WAR application running on application server using Java EE 6 with responsive design
+* Services exposes as REST endpoint
+* JPA based datasource for data storage
+* Graphene defined test for the application
+* QUnit tests covering REST endpoint testing
 
-You can select test scenario according to selected profiles. You need to select:
-
-1. Container
-2. Browser
-
-Following profiles are available:
-
-* arq-jbossas-managed
-* arq-jbossas-remote
-
-* webdriver-firefox
-* webdriver-phantomjs
-* webdriver-android
-
-Execution:
-
-[source]
-----
-mvn clean verify -Pwebdriver-firefox,arq-jbossas-managed
-----
+[NOTE]
+====
+This test is configured to run on Firefox, Chrome and PhantomJS, however all browsers supported by Drone will do.
+====

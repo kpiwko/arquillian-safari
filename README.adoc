@@ -1,0 +1,52 @@
+= Arquillian Safari
+
+Arquillian Safari contains various showcases for Arquillian Extensions combined in action.
+
+This project also demonstrates Arquillian Spacelift, that is used to bring dependencies needed
+to execute the scenarios and run the tests.
+
+[options="header"]
+|===========================================================================================================================================
+|Name | Demonstrates
+| link:arquillian-droidium-scenario/README.adoc[arquillian-droidium-scenario] | Arquillian Drone, Arquillian Graphene, Arquillian Droidium
+| link:arquillian-browsers-scenario/README.adoc[arquillian-browsers-scenario] | Arquillian Drone, Arquillian Graphene, Arquillian QUnit
+| link:arquillian-rest-scenario/README.adoc[arquillian-rest-scenario] | Arquillian Spock, Arquillian Byteman
+| link:arquillian-docker-scenario/README.adoc[arquillian-docker-scenario] | Arquillian Cube
+|===========================================================================================================================================
+
+== Prerequisites
+
+You should have following installed on your machine to execute Spacelift based tests
+
+* Java 7 or higher, +javac+ must be available on $PATH or %PATH%
+* Maven 3.1.1 or higher, +mvn+ must be available on $PATH or %PATH%
+
+=== Addition prerequisites
+
+Depending or particual test cases, you might need to install following software
+
+* Android SDK installation might require some 32bit packages in case you are running
+* Firefox browser if you intend to run browser tests with Firefox
+* Google Chrome/Chromium browser if you intend to run browser tests with Chrome/Chromium
+* Docker with enabled HTTP socket if you want to execute Docker scenario
+
+== Test execution
+
+Execute Gradle wrapper and Spacelift will do the rest
+
+[source]
+----
+./gradlew test
+----
+
+In case you want to execute only a dedicated subset of test, you can ask Spacelift for available profiles
+and execute only those:
+
+[source]
+----
+./gradlew describe
+# lets executed Droidium related tests
+./gradlew test -PdroidiumTests
+----
+
+

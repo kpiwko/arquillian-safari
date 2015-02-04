@@ -1,30 +1,20 @@
-= Arquillian Droidium Test
+= Arquillian Droidium Scenario
 
-This test shows interleaving in between application deployed on server back end an
+This project shows a seamless navigation in test using Android Application and web based UI as front-ends and backend running
+on application servers. Test is able to perform various actions on either of the frontends and validate that the action had expected effect
+on different frontend.
 
-== Test cases
+Additionally, this example demonstrates _Page_ and _Fragment_ abstractions from Arquillian Graphene to encapsulate low lever
+logic and keep it apart from the test itself.
 
-* Functional tests for desktop and mobile browsers
-* Web Page abstractions
-* Easy switching between browsers
+The example is using following architecture:
 
-== How to run
+* EAR application running on application server
+* REST services exposed for both Web UI and native Android Application
+* JPA based datasource for data storage
 
-[source]
-----
-mvn clean verify
-----
-
-== Limitations
-
-The test does not support testing on real device as URL in APK is hardcode to 10.0.0.2.
-
-== Requirements
-
-* Java
-* Maven (version 3.0 and above)
-* Android SDK and ANDRODI_HOME environment variable that point to it
-* Android 4.2.2 libraries installed in Android SDK
-
-
-
+[NOTE]
+====
+This test does not work on real devices as mobile application has hardcoded connection to +10.0.0.2+ IP address
+that acts as a identifier of host machine and which is not available on real devices.
+====

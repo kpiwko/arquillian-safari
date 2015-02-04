@@ -16,10 +16,7 @@
  */
 package org.arquillian.droidium.openblend.fragment.mobile;
 
-import org.arquillian.droidium.openblend.drones.Mobile;
-import org.jboss.arquillian.drone.api.annotation.Drone;
 import org.jboss.arquillian.graphene.fragment.Root;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -33,10 +30,6 @@ public class TaskMobileFragment {
 
     @Root
     private WebElement root;
-
-    @Mobile
-    @Drone
-    private WebDriver mobile;
 
     @FindBy(id = "name")
     private WebElement mobileName;
@@ -53,19 +46,12 @@ public class TaskMobileFragment {
     @FindBy(id = "add")
     private WebElement mobileAddButton;
 
-    @FindBy(id = "menu_logout")
-    private WebElement logoutButton;
-
     public void addTask(String taskName, String date, String description) {
         mobileAddButton.click();
         mobileName.sendKeys(taskName);
         mobileDate.sendKeys(date);
         mobileDescription.sendKeys(description);
         mobileSaveButton.click();
-    }
-
-    public void logout() {
-        logoutButton.click();
     }
 
 }

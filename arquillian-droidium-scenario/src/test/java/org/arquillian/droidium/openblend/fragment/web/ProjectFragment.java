@@ -16,11 +16,8 @@
  */
 package org.arquillian.droidium.openblend.fragment.web;
 
-import org.arquillian.droidium.openblend.drones.Browser;
-import org.jboss.arquillian.drone.api.annotation.Drone;
 import org.jboss.arquillian.graphene.Graphene;
 import org.jboss.arquillian.graphene.fragment.Root;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -35,10 +32,6 @@ public class ProjectFragment {
     @Root
     private WebElement root;
 
-    @Browser
-    @Drone
-    private WebDriver browser;
-
     @FindBy(className = "add-project")
     private WebElement addProject;
 
@@ -52,22 +45,19 @@ public class ProjectFragment {
     private WebElement addProjectButton;
 
     @FindBy(css = "#project-container .project.project-255-255-255")
-    private WebElement addedProject;
+    private WebElement currentProject;
 
-    public void click() {
+    public void addProject(String projectName) {
         addProject.click();
-        Graphene.waitGui(browser).until().element(addProject).attribute("style").contains("display: none;");
-    }
-
-    public void addProject(String projectTitle) {
-        click();
-        this.projectTitle.sendKeys(projectTitle);
+        Graphene.waitGui().until().element(addProject).attribute("style").contains("display: none;");
+        projectTitle.sendKeys(projectName);
         addProjectButton.click();
-        Graphene.waitGui(browser).until().element(addedProject).is().present();
+
+        Graphene.waitGui().until().element(currentProject).is().present();
     }
 
-    public WebElement getAddedProject() {
-        return addedProject;
+    public String currentProjectName() {
+        return currentProject.getText();
     }
 
 }

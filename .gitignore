@@ -1,8 +1,11 @@
 target
+ws
 */.classpath
 */.settings/*
 */.project
 .git*
 .project
 .settings/*
+*.xml.backup*
+.gradle
 !*/.settings/.jsdtscope

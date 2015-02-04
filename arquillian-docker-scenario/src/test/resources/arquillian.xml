@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<arquillian xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://jboss.org/schema/arquillian"
+    xsi:schemaLocation="http://jboss.org/schema/arquillian
+    http://jboss.org/schema/arquillian/arquillian_1_0.xsd">
+
+    <extension qualifier="docker">
+        <property name="serverVersion">1.12</property>
+        <property name="serverUri">http://localhost:2375</property>
+        <property name="autoStartContainers">${arquillian.cube.autostart}</property>
+        <property name="dockerContainers">            
+            wildfly:
+              buildImage:
+                dockerfileLocation: src/test/resources/wildfly
+                noCache: true
+                remove: true
+              exposedPorts: [8080/tcp, 9990/tcp]
+              await:
+                strategy: polling
+              portBindings: [8081->8080/tcp, 9991->9990/tcp]
+            wildfly_database:
+              extends: wildfly
+              links:
+                - database:database            
+            database:
+              image: zhilvis/h2-db
+              exposedPorts: [81/tcp, 1521/tcp]
+              await:
+                strategy: polling
+              portBindings: [1521/tcp, 8181->81/tcp]
+            database_manual:
+              extends: database
+              portBindings: [1522->1521/tcp, 8182->81/tcp]            
+        </property>
+    </extension>
+
+    <container qualifier="wildfly">
+        <configuration>
+            <property name="target">wildfly:8.1.0.Final:remote</property>
+            <property name="managementPort">9991</property>
+            <property name="username">admin</property>
+            <property name="password">Admin#70365</property>
+        </configuration>
+    </container>
+    <container qualifier="wildfly_database">
+        <configuration>
+            <property name="target">wildfly:8.1.0.Final:remote</property>
+            <property name="managementPort">9991</property>
+            <property name="username">admin</property>
+            <property name="password">Admin#70365</property>
+        </configuration>
+    </container>    
+</arquillian>

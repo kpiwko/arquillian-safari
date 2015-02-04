@@ -1,0 +1,13 @@
+= Arquillian REST Scenario
+
+This project shows how to use Spock framework in order to get BDD tests written in Groovy working with Arquillian. RESTAssured framework
+is used to excercise REST endpoints.
+
+Additionally, this example uses Arquillian Byteman plugin to inject a fault into bytecode of the application running on the server
+and asserting that error gets propagated back to test.
+
+The example is using following architecture:
+
+* WAR application running on application server
+* REST services exposed for both Web UI
+* JPA based datasource for data storage

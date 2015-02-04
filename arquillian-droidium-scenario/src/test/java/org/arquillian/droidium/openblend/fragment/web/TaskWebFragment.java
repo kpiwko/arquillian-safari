@@ -16,14 +16,15 @@
  */
 package org.arquillian.droidium.openblend.fragment.web;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
 import java.util.List;
 
-import org.arquillian.droidium.openblend.drones.Browser;
-import org.jboss.arquillian.drone.api.annotation.Drone;
 import org.jboss.arquillian.graphene.Graphene;
 import org.jboss.arquillian.graphene.findby.FindByJQuery;
 import org.jboss.arquillian.graphene.fragment.Root;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
@@ -38,10 +39,6 @@ public class TaskWebFragment {
 
     @Root
     private WebElement root;
-
-    @Drone
-    @Browser
-    private WebDriver browser;
 
     @FindBy(css = ".add-task.task")
     private WebElement addTask;
@@ -61,30 +58,18 @@ public class TaskWebFragment {
     @FindByJQuery("div.task:nth-child(1)")
     private WebElement addedTask;
 
+    @FindByJQuery("div.task div.task-title")
+    private List<WebElement> tasks;
+
     @FindBy(id = "task-project-select")
     private Select dropDownSelect;
 
-    @FindBy(css = "#task-tag-column .tag-select-column")
-    private List<WebElement> checkBoxes;
-
-    public void click() {
-        addTask.click();
-        Graphene.waitGui(browser).until().element(addTask).attribute("style").contains("display: none;");
-    }
-
-    public void addToProject(String toProject) {
-        dropDownSelect.selectByValue("1");
-    }
-
-    public AddedTask getAddedTask() {
-        return new AddedTask(addedTask);
-    }
-
     public void addTask(String project, String title, String year, String month, String day, String description) {
 
-        click();
+        addTask.click();
+        Graphene.waitGui().until().element(addTask).attribute("style").contains("display: none;");
 
-        addToProject(project);
+        dropDownSelect.selectByVisibleText(project);
 
         taskTitle.sendKeys(title);
 
@@ -96,7 +81,41 @@ public class TaskWebFragment {
         taskDescription.sendKeys(description);
 
         submitButton.click();
-        Graphene.waitGui(browser).until().element(addedTask).is().present();
+        Graphene.waitGui().until().element(addedTask).is().present();
+        assertThat(currentTask().getTitle(), is(title));
+        assertThat(currentTask().getDescription(), is(description));
+    }
+
+    public int totalTasks() {
+        return tasks.size();
+    }
+
+    private AddedTask currentTask() {
+        return new AddedTask(addedTask);
+    }
+
+    private static class AddedTask {
+
+        private final WebElement addedTask;
+
+        public AddedTask(WebElement addedTask) {
+            this.addedTask = addedTask;
+        }
+
+        /*
+         * public String getDate() {
+         * return addedTask.findElement(By.cssSelector(".task-upper .task-date")).getText();
+         * }
+         */
+
+        public String getTitle() {
+            return addedTask.findElement(By.cssSelector(".task-upper .task-title")).getText();
+        }
+
+        public String getDescription() {
+            return addedTask.findElement(By.cssSelector(".task-desc")).getText();
+        }
+
     }
 
 }

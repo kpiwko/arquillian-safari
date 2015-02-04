@@ -18,7 +18,7 @@
         <container qualifier="android" default="true">
             <configuration>
                 <!-- Name of Android container to start or use during tests. This property is filtered
-                    meaning it is set in profile in pom.xml under the same name of the property. -->
+                    meaning it is set in profile in pom.xml under the same name of the property. -->                    
                 <property name="avdName">${name.avd}</property>
                 <property name="emulatorOptions">${android.emulator.options}</property>
                 <property name="emulatorBootupTimeoutInSeconds">600</property>
@@ -33,10 +33,8 @@
         </container>
     </group>
 
-    <!-- Support for Arquillian Droidium Native extension
-        for testing native Android applications -->
-    <extension qualifier="droidium-native">
-        <property name="serverApk">selendroid-server-0.9.0.apk</property>
+    <extension qualifier="droidium-platform">
+        <property name="androidHome">/home/kpiwko/apps/android-sdk-linux_x86</property>
     </extension>
 
     <!-- This instance of WebDriver will control deployed EAR application -->
